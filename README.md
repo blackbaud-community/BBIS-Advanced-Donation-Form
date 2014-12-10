@@ -1,7 +1,7 @@
 BBIS-Advanced-Donation-Form
 ===========================
 
-This repo contains simplified examples of using the Advanced Donation Form part and corresponding REST API endpoints in Blackbuad Internet Solutions.  They are designed to guide you in the following order, which is also detailed in the [Advanced Donation Form section](http://developer.blackbaud.com/guide/advanced-donation-form/) of the [BBIS Developer Guide](http://developer.blackbaud.com/guide):
+This repo contains simplified examples of using the Advanced Donation Form part and corresponding REST API endpoints in Blackbuad Internet Solutions.  They are designed to guide you in the following order, which is also detailed in the [Advanced Donation Form section](http://developer.blackbaud.com/bbis/guide/advanced-donation-form/) of the [BBIS Developer Guide](http://developer.blackbaud.com/bbis/guide/):
 
 0. Barebones
 0. Payment 2.0
