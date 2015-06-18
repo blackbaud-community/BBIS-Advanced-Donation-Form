@@ -14,11 +14,11 @@ $(function() {
     }
   });
   
-  // Watch Countries Change
-  $('.countries').on('change', function() {
+  // Watch Country Change
+  $('#country').on('change', function() {
   
     // Load States
-    $.get(BLACKBAUD.api.pageInformation.rootPath + '/webapi/country/' + $(this).val(), function(states) {
+    $.get(BLACKBAUD.api.pageInformation.rootPath + '/webapi/country/' + $(this).val() + '/state', function(states) {
       selectState.html('');
       for (var i = 0, j = states.length; i < j; i++) {
         selectState.append('<option value="' + states[i].Id + '">' + states[i].Description + '</option>');
