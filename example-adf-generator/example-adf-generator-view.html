@@ -1,0 +1,779 @@
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+    <style>
+        .required_indicator {color: red;}
+        .designation_btn    {width: 5%;}
+        #html_template_text{
+            width: 100%;
+            height: 500px;
+            resize: vertical;
+        }
+        .error_text {color: red;}
+    </style>
+
+</head>
+
+<!-- TODO: Remove this button -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#html_template_modal">Get HTML</button>
+
+<div id="donation_div" class="container">
+    <h1>Make a Gift</h1> 
+    <h2>Donor Information</h2>
+    <form class="form-horizontal">
+        <!-- Donor.Title -->
+        <div class="form-group">
+            <label for="Donor_Title" class="col-md-3">Title:</label>
+            <select id="donor_selector" name="Donor_Title">
+                <option value=""></option>
+                <!-- TODO: Remove generated options -->
+            </select>
+        </div>
+
+        <!-- Donor.FirstName -->
+        <div class="form-group">
+            <label for="Donor_FirstName" class="col-md-3">First Name:</label>
+            <input type="text" name="Donor_FirstName">
+        </div>
+
+        <!-- Donor.LastName -->
+        <div class="form-group">
+            <label for="Donor_LastName" class="col-md-3">Last Name:</label>
+            <input type="text" name="Donor_LastName" required>
+            <span class="required_indicator">*</span>
+        </div>
+
+        <!-- Donor.EmailAddress -->
+        <div class="form-group">
+            <label for="Donor_EmailAddress" class="col-md-3">Email Address:</label>
+            <input type="email" name="Donor_EmailAddress" required>
+            <span class="required_indicator">*</span>
+        </div>
+
+        <!-- Donor.Phone -->
+        <div class="form-group">
+            <label for="Donor_Phone" class="col-md-3">Phone Number:</label>
+            <input type="text" name="Donor_Phone">
+        </div>
+
+        <!-- Donor.Address.StreetAddress -->
+        <div class="form-group">
+            <label for="Donor_Address_StreetAddress" class="col-md-3">Street Address:</label>
+            <input type="text" name="Donor_Address_StreetAddress" required>
+            <span class="required_indicator">*</span>
+        </div>
+
+        <!-- Donor.Address.City -->
+        <div class="form-group">
+            <label for="Donor_Address_City" class="col-md-3">City:</label>
+            <input type="text" name="Donor_Address_City" required>
+            <span class="required_indicator">*</span>
+        </div>
+
+        <!-- Donor.Address.Country -->
+        <div class="form-group">
+            <label for="Donor_Address_Country" class="col-md-3">Country:</label>
+            <!-- TODO: You may remove the generatred options and let the API populate the list at runtime -->
+            <select id="country" name="Donor_Address_Country" required>
+            <option value=""></option>
+            <!-- TODO: Remove Countries -->
+            </select>
+            <span class="required_indicator">*</span>
+        </div>
+
+        <!-- Donor.Address.State -->
+        <div class="form-group">
+            <label for="Donor_Address_State" class="col-md-3">State:</label>
+            <select id="state" name="Donor_Address_State" required></select>
+            <span class="required_indicator">*</span>
+        </div>
+
+        <!-- Donor.Address.PostalCode -->
+        <div class="form-group">
+            <label for="Donor_Address_PostalCode" class="col-md-3">Postal Code:</label>
+            <input type="text" name="Donor_Address_PostalCode" maxlength="5" required>
+            <span class="required_indicator">*</span>
+        </div>
+
+        <div id="corporate_section">
+            <div class="form-group">
+                <!-- Donor.IsCorporate -->
+                <label for="Donor_IsCorporate" class="col-md-3">Is this donation being made on behalf of a company or organization?</label>
+                <input type="radio" name="Donor_IsCorporate" value="true" id="iscorporate_yes" required>Yes
+                <input type="radio" name="Donor_IsCorporate" value="false" id="iscorporate_no" checked required>No
+                <span class="required_indicator">*</span>
+            </div>
+            <br />
+            <br />
+
+            <div class="form-group" id="corporateinput" style="display:none;">
+                <!-- Donor.OrganizationName -->
+                <label for="Donor_OrganizationName" class="col-md-3">Company Name:</label>
+                <input id="org_name_input" type="text" name="Donor_OrganizationName" disabled>
+                <span class="required_indicator">*</span>
+            </div>
+        </div>
+
+        <h2>Gift Information</h2>
+
+        <!-- Gift.IsAnonymous -->
+        <div class="form-group">
+            <label for="Gift_IsAnonymous" class="col-md-3">Would you like to make this donation anonymously?</label>
+            <input type="radio" name="Gift_IsAnonymous" value="true" required>Yes
+            <input type="radio" name="Gift_IsAnonymous" value="false" required>No
+            <span class="required_indicator">*</span>
+        </div>
+        <br />
+        <!-- Gift.PaymentMethod -->
+        <div class="form-group">
+            <label for="Gift_PaymentMethod" class="col-md-3">Payment Method:</label>
+            <input type="radio" name="Gift_PaymentMethod" value="0" required>Credit Card
+            <input type="radio" name="Gift_PaymentMethod" value="1" required>Bill Me Later
+            <span class="required_indicator">*</span>
+        </div>
+
+        <!-- Gift Designations Collections -->
+        <div class="form-group">
+            <label class="col-md-3">Designation(s)</label>
+            <div id="designation_selectors" class="col-md-offset-3">
+                <div>
+                    <select id="default_designation_selector">
+                    <!-- TODO: Remove Designations -->
+                    </select>
+                    <input type="text" placeholder='Donation Amount'>
+                    <button type="button" class="btn btn-success designation_btn" id="add_designation">+</button> <span class="required_indicator">*</span>
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div id="recurrence_section">
+            <!-- Gift.Recurrence -->
+            <div class="form-group">
+                <label class="col-md-3">Will this be a recurring or one-time donation?</label>
+                <input id="frequency_recurring" type="radio" value="true" required>Recurring
+                <input id="frequency_onetime" type="radio" value="false" checked required>One-Time
+                <span class="required_indicator">*</span>
+            </div>
+            <br />
+
+            <div id="frequencyinput" style="display:none;">
+                <!-- Gift.Recurrence.Frequency -->
+                <div class="form-group">
+                    <label for="Gift_Recurrence_Frequency" class="col-md-3">Frequency:</label>
+                    <select id="gift_frequency_selector" name="Gift_Recurrence_Frequency" disabled="true">
+                        <option value=""></option>
+                        <option value="1">Weekly</option>
+                        <option value="2">Monthly</option>
+                        <option value="3">Quarterly</option>
+                        <option value="4">Annually</option>
+                    </select>
+                </div>
+
+                <!-- Gift.Recurrence.DayOfWeek -->
+                <div class="form-group recur_weekly" style="display:none;">
+                    <label for="Gift_Recurrence_DayOfWeek" class="col-md-3">Day Of Week:</label>
+                    <select id="gift_dayofweek_selector" name="Gift_Recurrence_DayOfWeek" disabled="true">
+                        <option value="0">Sunday</option>
+                        <option value="1">Monday</option>
+                        <option value="2">Tuesday</option>
+                        <option value="3">Wednesday</option>
+                        <option value="4">Thursday</option>
+                        <option value="5">Friday</option>
+                        <option value="6">Saturday</option>
+                    </select>
+                </div>
+
+                <!-- Gift.Recurrence.Month -->
+                <div class="form-group recur_annually" style="display:none;">
+                    <label for="Gift_Recurrence_Month" class="col-md-3">Month:</label>
+                    <select id="gift_month_selector" name="Gift_Recurrence_Month" disabled="true">
+                        <option value="1">January</option><option value="2">February</option>
+                        <option value="3">March</option><option value="4">April</option>
+                        <option value="5">May</option><option value="6">June</option>
+                        <option value="7">July</option><option value="8">August</option>
+                        <option value="9">September</option><option value="10">October</option>
+                        <option value="11">November</option><option value="12">December</option>
+                    </select>
+                </div>
+
+                <!-- Gift.Recurrence.DayOfMonth -->
+                <div class="form-group recur_nonweekly" style="display:none;">
+                    <label for="Gift_Recurrence_DayOfMonth" class="col-md-3">Day Of Month:</label>
+                    <input type="number" min="1" max="31" id="gift_dayofmonth_selector" name="Gift_Recurrence_DayOfMonth" disabled="true">
+                        
+                    </input>
+                </div>
+
+                <!-- TODO: Remove hasDatePicker class from input -->
+                <!-- Gift.Recurrence.StartDate -->
+                <div class="form-group">
+                    <label for="Gift_Recurrence_StartDate" class="col-md-3">Start Date:</label>
+                    <input id="user_gift_startdate_picker" type="text" placeholder="mm/dd/yyyy" disabled="true">
+                    <input id="gift_startdate_input" type="text" name="Gift_Recurrence_StartDate" disabled="true" hidden="true">
+                </div>
+
+                <!-- TODO: Remove hasDatePicker class from input -->
+                <!-- Gift.Recurrence.EndDate -->
+                <div class="form-group">
+                    <label for="Gift_Recurrence_EndDate" class="col-md-3">End Date:</label>
+                    <input id="user_gift_enddate_picker" type="text" placeholder="mm/dd/yyyy" disabled="true">
+                    <input id="gift_enddate_input" type="text" name="Gift_Recurrence_EndDate" placeholder="mm/dd/yyyy" disabled="true" hidden="true">
+                </div>
+            </div>
+        </div>
+
+        <!-- Gift.Tribute -->
+        <div id="tribute_section">
+            <div class="form-group">
+                <label class="col-md-3">Is this donation in honor of someone? (Tribute)</label>
+                <input id="tribute_yes" type="radio" value="true" required>Yes
+                <input id="tribute_no" type="radio" value="false" checked required>No
+                <span class="required_indicator">*</span>
+            </div>
+            <br />
+
+            <div id="tributeinput" style="display:none;">
+                <!-- Gift.Tribute.TributeDefinition.LastName -->
+                <div class="form-group">
+                    <label for="Gift_Tribute_TributeDefinition_LastName" class="col-md-3">Tribute's Last Name:</label>
+                    <input id="tribute_lastname_input" type="text" name="Gift_Tribute_TributeDefinition_LastName" disabled="true">
+                </div>
+
+                <!-- Gift.Tribute.TributeDefinition.Type -->
+                <!-- TODO: Use relevant tribute information to populate input -->
+                <input type="text" name="Gift_Tribute_TributeDefinition_Type" style="display:none;" disabled="true">
+
+                <!-- Gift.Tribute.TributeDefinition.Description -->
+                <!-- TODO: Use relevant tribute information to populate input -->
+                <input type="text" name="Gift_Tribute_TributeDefinition_Description" style="display:none;" disabled="true">
+
+                <!-- Gift.Tribute.Acknowledgee -->
+                <div class="form-group">
+                    <label class="col-md-3">Would you like to acknowledge anyone of this donation?</label>
+                    <input id="acknowledgee_yes" type="radio" value="true">Yes
+                    <input id="acknowledgee_no" type="radio" value="false" checked>No
+                </div>
+                <br />
+                <div id="acknowledgeeinput" style="display:none;">
+                    <!-- Gift.Tribute.Acknowledgee.LastName -->
+                    <div class="form-group">
+                        <label for="Gift_Tribute_Acknowledgee_LastName" class="col-md-3">Acknowledgee's Last Name:</label>
+                        <input id="acknowledgee_lastname_input" type="text" name="Gift_Tribute_Acknowledgee_LastName" disabled="true">
+                    </div>
+
+                    <!-- Gift.Tribute.Acknowledgee.AddressLines -->
+                    <div class="form-group">
+                        <label for="Gift_Tribute_Acknowledgee_AddressLines" class="col-md-3">Acknowledgee's Street Address:</label>
+                        <input id="acknowledgee_address_input" type="text" name="Gift_Tribute_Acknowledgee_AddressLines" disabled="true">
+                    </div>
+
+                    <!-- Gift.Tribute.Acknowledgee.Country -->
+                    <div class="form-group">
+                        <label for="Gift_Tribute_Acknowledgee_Country" class="col-md-3">Acknowledgee's Country:</label>
+                        <select id="ack_country" name="Gift_Tribute_Acknowledgee_Country" disabled="true">
+                            <option value=""></option>
+                        <!-- TODO: Remove Countries -->
+                        </select>
+                    </div>
+
+                    <!-- Gift.Tribute.Acknowledgee.State -->
+                    <div class="form-group">
+                        <label for="Gift_Tribute_Acknowledgee_State" class="col-md-3">Acknowledgee's State:</label>
+                        <select id="ack_state" name="Gift_Tribute_Acknowledgee_State" disabled="true">
+                        </select>
+                    </div>
+
+                    <!-- Gift.Tribute.Acknowledgee.City -->
+                    <div class="form-group">
+                        <label for="Gift_Tribute_Acknowledgee_City" class="col-md-3">Acknowledgee's City:</label>
+                        <input id="acknowledgee_city_input" type="text" name="Gift_Tribute_Acknowledgee_City" disabled="true">
+                    </div>
+
+                    <!-- Gift.Tribute.Acknowledgee.PostalCode -->
+                    <div class="form-group">
+                        <label for="Gift_Tribute_Acknowledgee_PostalCode" class="col-md-3">Acknowledgee's Postal Code:</label>
+                        <input id="acknowledgee_postalcode_input" type="text" name="Gift_Tribute_Acknowledgee_PostalCode" maxlength="5" disabled="true">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gift.Comments -->
+        <div class="form-group">
+            <label for="Gift_Comments" class="col-md-3">Enter any comments you would like to make with this donation:</label>
+            <textarea name="Gift_Comments"></textarea>
+        </div>
+
+        <!-- BEGIN HIDDEN FORM FIELDS -->
+
+        <!-- Gift.FinderNumber -->
+        <input type="text" name="Gift_FinderNumber" style="display:none;">
+
+        <!-- Gift.SourceCode -->
+        <input type="text" name="Gift_SourceCode" style="display:none;">
+
+        <!-- Gift.CreateAidDeclaration -->
+        <input type="text" name="Gift_CreateAidDeclaration" style="display:none;">
+
+        <!-- BBSPReturnUri -->
+        <input type="text" name="BBSPReturnUri" style="display:none;">
+
+        <!-- BBSPTemplateSitePageId -->
+        <input type="text" name="BBSPTemplateSitePageId" style="display:none;">
+
+        <!-- MerchantAccountId -->
+        <input type="text" name="MerchantAccountId" style="display:none;">
+
+    <!-- Submit Button -->
+    <div class="col-md-2">
+        <button class="btn btn-primary" type="submit" value="Submit" id="submit_button">Submit</button>
+    </div>
+
+    </form>
+
+</div>
+<div id="confirmation_success" style="display:none;"></div>
+<div class="error_text" id="confirmation_fail" style="display:none;">
+    An error occurred when retrieving the receipt for this transaction. Your donation has been processed. Please check your email for an acknowledgement of this donation.
+</div>
+<div class="error_text" id="complete_donation_error" style="display:none;">
+    There was an error processing your donation. Your credit card has not been charged, and you will not receive a bill for this transaction. Please try again later.
+</div>
+
+<!-- TODO: Remove modal code -->
+<div class="modal fade" id="html_template_modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="html_template_title">HTML Template Code</h4>
+            </div>
+            <div class="modal-body">
+                <textarea id="html_template_text" readonly></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script>
+
+// On Page Load
+$(function()    {
+
+    // Check to see if we're returning from the payment page to complete the donation
+    var t_id = BLACKBAUD.api.querystring.getQueryStringValue('t');
+    if (t_id != '')   {
+        // Show confirmation page
+        confirmDonation(t_id);
+    } else {
+    // TODO: Fill in your own options and uncomment the object below.
+
+    // var form_options = {};
+    // form_options.settings = {};
+    // form_options.settings.designations = [{'d_name': STRING , 'd_id': STRING}];
+    // form_options.settings.MerchantAccountId = GUID;
+    // form_options.settings.BBSPReturnUri = URL;
+    // form_options.settings.BBSPTemplateSitePageId = ;
+    // init_form(form_options);
+    }
+});
+
+/**
+ *  Uses the DonationService to complete the donation, given a transaction id.
+ *  Displays the confirmation / receipt to the user. Hides the donation form.
+ **/
+function confirmDonation(t_id)  {
+    $('#donation_div').hide();
+    var donation_service = new BLACKBAUD.api.DonationService( $('.BBDonationApiContainer').data('partid') );
+
+    // Function called if completeBBSPDonation method succeeds
+    var success = function(data)   {
+        // Show confirmation HTML
+        donation_service.getDonationConfirmationHtml(t_id, function(html)   {
+            // Called if getDonationConfirmationHtml succeeds
+            $('#confirmation_success').append(html);
+            $('#confirmation_success').show();
+        }, function(error)  {
+            // Called if getDonationConfirmationHtml fails
+            $('#confirmation_fail').show();
+        });
+    }
+
+    // Function called if completeBBSPDonation method fails
+    var error = function(returnedErrors)    {
+        $('#complete_donation_error').show();
+    }
+
+    donation_service.completeBBSPDonation(t_id, success, error);
+}
+
+/**
+ *  Prepares the form for use. Adds datepickers to fields, sets up designation
+ *  and country/state selectors. Populates Title selector.
+ **/
+function init_form(options)    {
+
+    /************* TODO: Remove this section******/
+    if (!options.settings.AllowTribute) {
+        $('#tribute_section').remove();
+    }
+
+    if (!options.settings.AllowCorporate)   {
+        $('#corporate_section').remove();
+    }
+
+    if (!options.settings.AllowRecurrence)  {
+        $('#recurrence_section').remove();
+    }
+    /*********************************************/
+
+    // Initialize the jquery datepickers to an input box for the user.
+    // The picker input box allows a date format to be displayed
+    // that differs from the actual date string submitted with the form.
+    $('#user_gift_startdate_picker').datepicker({
+        // The hidden input to match API formatting
+        altField: '#gift_startdate_input',
+        altFormat: 'mm/dd/yy',      // Actual value
+        dateFormat: 'mm/dd/yy',     // User displayed value
+        changeYear: true,
+        changeMonth: true,
+        numberOfMonths: 1,
+        minDate: new Date(),
+        onClose: function(selectedDate) {
+            $('#user_gift_enddate_picker').datepicker("option", "minDate", selectedDate);
+        }
+    });
+
+    $('#user_gift_enddate_picker').datepicker({
+        altField: '#gift_enddate_input',
+        altFormat: 'mm/dd/yy',
+        dateFormat: 'mm/dd/yy',
+        changeYear: true,
+        changeMonth: true,
+        numberOfMonths: 1,
+        onClose: function(selectedDate) {
+            $('#user_gift_startdate_picker').datepicker("option", "maxDate", selectedDate);
+        }
+    });
+
+    // Keep track of the number of designation selectors -- Minimum 1
+    var num_designations = 1;
+    $('#add_designation').click(function()  {
+        addDesignation(num_designations, options.settings.designations);
+        num_designations++;
+    });
+
+    var html_string = "";
+    if (typeof options.settings.designations !== "undefined")   {
+        $.each(options.settings.designations, function(index, value)  {
+        html_string += "<option value='" + value.d_id + "'>" + value.d_name + "</option> ";
+        });
+        $('#default_designation_selector').append(html_string);
+    }
+
+    // Add values to hidden form elements
+    $('[name="MerchantAccountId"]').val(options.settings.MerchantAccountId);
+    $('[name="BBSPReturnUri"]').val(options.settings.BBSPReturnUri);
+    $('[name="BBSPTemplateSitePageId"]').val(options.settings.BBSPTemplateSitePageId);
+
+    // Country and State selectors
+    var statecountryselectors = [['#country', '#state'], ['#ack_country', '#ack_state']];
+  
+    // Load Countries using bbis api
+    $.each(statecountryselectors, function(index, value)    {
+        var selectCountry   = $(value[0]);
+        var selectState     = $(value[1]);
+        $.get(BLACKBAUD.api.pageInformation.rootPath + '/webapi/country', function(countries) {
+            for (var i = 0, j = countries.length; i < j; i++) {
+                selectCountry.append('<option value="' + countries[i].Description + '" ' + 'data-country-id="' + countries[i].Id + '">' + countries[i].Description + '</option>');
+            }
+        });
+          
+        // Watch Countries Change
+        $(selectCountry).on('change', function() {
+            selectState.html('');        
+            // Load States using bbis api
+            $.get(BLACKBAUD.api.pageInformation.rootPath + 'webapi/country/' + $(this).find(":selected").attr('data-country-id') + '/state', function(states) {
+                for (var i = 0, j = states.length; i < j; i++) {
+                    selectState.append('<option value="' + states[i].Abbreviation + '">' + states[i].Description + '</option>');
+                }
+            });
+        });
+    });
+
+    // TODO: Does this match the GUID in your database?
+    // GUID for Title CodeTable
+    var TITLE_GUID  = "456FFD4C-0FBF-49DB-A503-0726F86E2A39";
+    var selectTitle = $('#donor_selector');
+
+    // Populate Title selector
+    $.get(BLACKBAUD.api.pageInformation.rootPath + 'webapi/codetable/' + TITLE_GUID, function(titles)  {
+        $.each(titles, function(index, value)   {
+            selectTitle.append('<option value="' + value.Description + '">' + value.Description + '</option>');
+        });
+    });
+
+    form_listeners();
+}
+
+/**
+ *  This function attaches form listeners to the DOM. These listeners
+ *  enable/disable additional input boxes on the form based on user input,
+ *  and displays/hides those inputs on the page.
+ **/
+function form_listeners()   {
+
+    /*************** TODO: Remove this section **********************/
+    // Populate modal HTML text area
+    $('#html_template_modal').on('show.bs.modal', function (event)  {
+        $(this).find('.modal-body textarea').val($('#donation_div').parent().html());
+    });
+    /***************************************************************/
+
+    /* Begin Corporate donor inputs */
+    $('#iscorporate_yes').click(function()  {
+        $('#corporateinput').children('input').prop('disabled', false);
+        $('#corporateinput').show();
+    });
+
+    $('#iscorporate_no').click(function()   {
+        $('#corporateinput').children('input').prop('disabled', true);
+        $('#corporateinput').hide();
+    });
+    /* End Corporate donor inputs */
+
+    /* Begin frequency inputs */
+    $('#frequency_recurring').click(function()    {
+        $('#frequency_onetime').prop('checked', false);
+        $('#frequencyinput').children('.form-group').children('input').prop('disabled', false);
+        $('#frequencyinput').children('.form-group').children('select').prop('disabled', false);
+        $('#frequencyinput').show();
+    });
+
+    $('#frequency_onetime').click(function() {
+        $('#frequency_recurring').prop('checked', false);
+        $('#frequencyinput').children('.form-group').children('input').prop('disabled', true);
+        $('#frequencyinput').children('.form-group').children('select').prop('disabled', true);
+        $('#frequencyinput').hide();
+    });
+    /* End frequency inputs */
+
+    /* Begin tribute inputs */
+    $('#tribute_yes').click(function()  {
+        $('#tribute_no').prop('checked', false);
+        $('#tributeinput').children('.form-group').children('input').prop('disabled', false);
+        $('#tributeinput').children('input').prop('disabled', false);
+        $('#tributeinput').show();
+    });
+
+    $('#tribute_no').click(function()   {
+        $('#tribute_yes').prop('checked', false);
+        $('#acknowledgee_no').trigger("click");
+        $('#tributeinput').children('.form-group').children('input').prop('disabled', true);
+        $('#tributeinput').children('input').prop('disabled', true);
+        $('#tributeinput').hide();
+    });
+    /* End tribute inputs */
+
+    /* Begin acknowledgee inputs */
+    $('#acknowledgee_yes').click(function() {
+        $('#acknowledgee_no').prop('checked', false);
+        $('#acknowledgeeinput').children('.form-group').children('input').prop('disabled', false);
+        $('#acknowledgeeinput').children('.form-group').children('select').prop('disabled', false);
+        $('#acknowledgeeinput').show();
+    });
+
+    $('#acknowledgee_no').click(function()  {
+        $('#acknowledgee_yes').prop('checked', false);
+        $('#acknowledgeeinput').children('.form-group').children('input').prop('disabled', true);
+        $('#acknowledgeeinput').children('.form-group').children('select').prop('disabled', true);
+        $('#acknowledgeeinput').hide();
+    });
+    /* End acknowledgee inputs */
+
+
+    // Gift Recurrence Options
+    $('#gift_frequency_selector').on('change', function()   {
+
+        // Disable all recur form inputs
+        $('.recur_weekly, .recur_nonweekly, /recur_annually').children('select').prop('disabled', true);
+        
+        // Hide all recur form inputs
+        $('.recur_nonweekly, .recur_annually, .recur_weekly').hide();
+
+        var selection = parseInt($('#gift_frequency_selector').val());
+        switch (selection)  {
+            case 1:
+                // Weekly - Show DayOfWeek input, hide/disable others
+                $('.recur_weekly').children('select').prop('disabled', false);
+                $('.recur_weekly').show();
+                break;
+            case 2:
+            case 3:
+                // Monthly/Quarterly - Show DayOfMonth input, hide/disable others
+                $('.recur_nonweekly').children('select').prop('disabled', false);
+                $('.recur_nonweekly').show();
+                break;
+            case 4:
+                // Annually - Show DayOfMonth and Month input, hide/disable others
+                $('.recur_nonweekly, .recur_annually').children('select').prop('disabled', false);
+                $('.recur_nonweekly, .recur_annually').show();
+                break;
+        }
+    });
+
+    // Form submit listener
+    $( 'form' ).on('submit', function( event ) {
+        event.preventDefault();
+        var user_input = $( this ).serializeArray();
+        $('#submit_button').prop('disabled', true);
+        $('#submit_button').text('Please wait...');
+
+        // Show confirmation if user opted for Bill Me Later
+        if ($('input:radio[name = "Gift_PaymentMethod"]:checked').val() == "1")  {
+            $('#donation_div').hide();
+            $('#confirmation_div').html(
+                "Thanks for your donation! Check your email for confirmation."
+            );
+        }
+        gatherData( user_input );
+    });
+
+    // Display the donation form after layout is complete
+    $('#donation_div').show();
+}
+
+/**
+ *  Helper function. Dynamically adds options to the designation selector, given a unique
+ *  designation number (to create unique id's for button manipulation), and an array of designation
+ *  objects. Sets up the remove button for additional designations
+ **/
+function addDesignation(designation_number, designations) {
+    if (typeof designations !== "undefined") {
+        var html_string = "<div><select>"; 
+        $.each(designations, function(index, value)  {
+            html_string += "<option value='" + value.d_id + "'>" + value.d_name + "</option>";
+        });
+        html_string += "</select> <input type='text' placeholder='Donation Amount'> <button type='button' class='btn btn-danger designation_btn' id='del_designation_" + designation_number + "'>-</button></div>";
+        $('#designation_selectors').append(html_string);
+        $('#del_designation_' + designation_number).click(function()  {
+            $(this).parent('div').remove();
+        });
+    }
+}
+
+/**
+ *  Collates and gathers data into a JSON object for POST submission
+ *  to create donation.
+ **/
+function gatherData(user_input) {
+    var post_body = {};
+
+    // Iterate through the collection of input name/value objects.
+    $.each(user_input, function(input_index, input_obj)   {
+        /**
+         *  Create an array of the input names. These will serve as
+         *  'key' values for the post body. They directly match up with
+         *  what is expected in the post body.
+         **/
+        var body_keys = input_obj['name'].split("_");
+        
+        // Closure function to create the nested key/value object
+        // ["Donor", "Address", "City"] => {Donor: {Address: { City: ""}}}
+        function create_value_obj(value_obj, keys, value)  {
+            // If we're not on the final key, pull the first off the
+            // array and create an object if not already instantiated.
+            // Return the recursive call with the newly constructed object
+            // and the shifted keys list.
+            if(keys.length > 1) {
+                var curr_key = keys.shift();
+                value_obj[curr_key] = value_obj[curr_key] || {};
+
+                value_obj[curr_key] = create_value_obj(value_obj[curr_key], keys, value);
+                return value_obj;
+            } else  {
+
+                // Assign the value to the remaining key, and return the object
+                value_obj[keys[0]] = value;
+                return value_obj;
+            }
+        }
+        // Enter the recursive call
+        post_body = create_value_obj(post_body, body_keys, input_obj.value);
+    });
+
+    // Collect Designation data from form and add to the POST body
+    var designations = [];
+    $('#designation_selectors').children('div').each(function() {
+        var designation_object = {
+            'Amount': Number($(this).children('input').val()),
+            'DesignationId': $(this).children('select').val()
+        };
+        designations.push(designation_object);
+    });
+    post_body.Gift.Designations = designations;
+
+    // Remove unnecessary data from the post body
+    delete post_body.ScriptManager1;
+    delete post_body[""];
+    // Removes breadcrumb inputs
+    $.each(post_body, function(name, value) {
+        if (name.lastIndexOf('ctl', 0) === 0) {
+            delete post_body[name];
+        }
+    });
+
+    // Parsing the body data into the correct formats for the CreateDonation API call.
+    post_body.BBSPTemplateSitePageId    =   parseInt(post_body.BBSPTemplateSitePageId);
+    post_body.MerchantAccountId         =   post_body.MerchantAccountId;
+    post_body.Gift.PaymentMethod        =   parseInt(post_body.Gift.PaymentMethod);
+    post_body.Gift.IsAnonymous          =   JSON.parse(post_body.Gift.IsAnonymous);
+    if (post_body.Gift.Recurrence)  {
+        post_body.Gift.Recurrence.Frequency = parseInt(post_body.Gift.Recurrence.Frequency);
+    }
+    // If the user selects "BillMeLater" as a payment method, null the BBSPReturnUri
+    if (post_body.Gift.PaymentMethod == "1")    {
+        post_body.BBSPReturnUri = null;
+    }
+
+    post_donation(post_body);
+}
+
+/**
+ *  This function uses Blackbaud's DonationService to create a donation with the inputted data.
+ *  @data: A properly formatted object containing the properties necessary to create a donation. 
+ **/
+function post_donation(data)    {
+    // Create an instance of the DonationService
+    var donation_service = new BLACKBAUD.api.DonationService(
+        $('.BBDonationApiContainer').data('partid')
+    );
+
+    // What to do if the donation posts sucessfully. Called prior to redirecting to payment page
+    var success = function(returnedDonation)   {
+        console.log(returnedDonation);
+    }
+
+    // What to do if the donation doesn't post. Returned errors is an array of error objects
+    var error = function(returnedErrors)    {
+        console.log("Error!");
+        console.log(returnedErrors);
+    }
+
+    donation_service.createDonation(data, success, error);
+}
+</script>
