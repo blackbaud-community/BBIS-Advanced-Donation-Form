@@ -28,118 +28,98 @@
     </head>
 
     <body>
-        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <!-- Bootstrap requires a different version of jQuery than BBIS supplies. use jQuery to distinguish between the two -->
-        <script>var jQuery = $.noConflict(true);</script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    
-        <!-- Main Panel group for all the accordion styled drop downs -->
-        <div class="panel-group" id="accordion" style="max-width:740px; margin:0 auto;" role="tablist" aria-multiselectable="true">
+        <div style="max-width:740px; margin:0 auto;">
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingOne">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"  aria-expanded="true" aria-controls="collapseOne" onclick="if(jQuery('#glyphOne').hasClass('glyphicon-menu-down')) jQuery('#glyphOne').attr('class','glyphicon glyphicon-menu-right'); else jQuery('#glyphOne').attr('class','glyphicon glyphicon-menu-down'); jQuery('#glyphTwo').attr('class','glyphicon glyphicon-menu-right'); jQuery('#glyphThree').attr('class','glyphicon glyphicon-menu-right');">
-                            <span class="glyphicon glyphicon-menu-down" id="glyphOne" aria-hidden="true"></span> Administrative Settings 
-                        </a>
+                        Administrative Settings 
                     </h4>
                 </div>
                 <!-- Settings to fill in payment 2.0 or custom merchant account stuff -->
-                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                    <div class="panel-body">                        
-                        <input class="size_mod" type="radio" onclick="jQuery('#paymentTwoPageSelect').show(); jQuery('#merchantAccountSelect').hide();" name="usePayments" id="usePaymentRdo" disabled="true">
-                            Use Payment 2.0
-                        </input>
-                        <div>
-                            <span style="color:red;">---Currently Unavailable---</span>
-                        </div>
-                        <br/>
+                <div class="panel-body">                        
+                    <input class="size_mod" type="radio" onclick="jQuery_2_1_4('#paymentTwoPageSelect').show(); jQuery_2_1_4('#merchantAccountSelect').hide();" name="usePayments" id="usePaymentRdo" disabled="true">
+                        Use Payment 2.0
+                    </input>
+                    <div>
+                        <span style="color:red;">---Currently Unavailable---</span>
+                    </div>
+                    <br/>
 
-                        <input class="size_mod" type="radio" checked="true" onclick="jQuery('#paymentTwoPageSelect').hide(); jQuery('#merchantAccountSelect').show();" name="usePayments" id="useMerchRdo">
-                            Custom Merchant Account
-                        </input>
-                    
-                        <div id="merchantAccountSelect">
-                            <fieldset>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        URL
-                                    </span>
-                                    <input class="form-control" id="postPaymentUriText" type="text" placeholder="Uri to redirect to after completing the payment" >
-                                </div>
-                                </br>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        GUID
-                                    </span>
-                                    <input class="form-control" id="merchIdText" type="text" placeholder="Merchant Account Id">
-                                </div>
-                                </br>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        Integer
-                                    </span>
-                                <input class="form-control" id="templateSideIdText" type="text" placeholder="Template Site Page Id to return to after payment">
-                                </div>
-                            </fieldset>
-                            <br/>
-                        </div>
-                        
-                        <!-- Designations Section -->
-                        <div class="row">
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab">
-                                    <h4 class="panel-title">
-                                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#designationBody" aria-expanded="false" aria-controls="collapseExample">
-                                            Designations
-                                        </button>
-                                    </h4>
-                                </div>
-                            </div>                
-                            <div class="collapse" id="designationBody">
-                                <div class = "well"> 
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    Name
-                                                </span>
-                                                <input class="form-control" id="designationNameBox" type="text" placeholder="Name as people will see it" >
-                                            </div>
-                                            <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    GUID
-                                                </span>
-                                                <input class="form-control" id="designationTextBox" type="text" placeholder="Enter a Designation ID" >
-                                            </div>
-                                            <button type="button" onClick="addDesignation(jQuery('#designationTextBox').val(), jQuery('#designationNameBox').val(), jQuery('#designationPreview')); jQuery('#designationTextBox').val(''); jQuery('#designationNameBox').val('');">
-                                                Add
-                                            </button>
-                                        </div>
-                                        <div class="col-md-6" id="designationPreview">
-                                            <label>
-                                                List Of Designations
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                    <input class="size_mod" type="radio" checked="true" onclick="jQuery_2_1_4('#paymentTwoPageSelect').hide(); jQuery_2_1_4('#merchantAccountSelect').show();" name="usePayments" id="useMerchRdo">
+                        Custom Merchant Account
+                    </input>
+                
+                    <div id="merchantAccountSelect">
+                        <fieldset>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    URL
+                                </span>
+                                <input class="form-control" id="postPaymentUriText" type="text" placeholder="Uri to redirect to after completing the payment" >
                             </div>
+                            </br>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    GUID
+                                </span>
+                                <input class="form-control" id="merchIdText" type="text" placeholder="Merchant Account Id">
+                            </div>
+                            </br>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    Integer
+                                </span>
+                            <input class="form-control" id="templateSideIdText" type="text" placeholder="Template Site Page Id to return to after payment">
+                            </div>
+                        </fieldset>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+            <!-- Designations Section -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                    <h4 class="panel-title">
+                        Designations
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    Name
+                                </span>
+                                <input class="form-control" id="designationNameBox" type="text" placeholder="Name as people will see it" >
+                            </div>
+                            <br />
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    GUID
+                                </span>
+                                <input class="form-control" id="designationTextBox" type="text" placeholder="Enter a Designation ID" >
+                            </div>
+                            <br />
+                            <button type="button" onClick="addDesignation(jQuery_2_1_4('#designationTextBox').val(), jQuery_2_1_4('#designationNameBox').val(), jQuery_2_1_4('#designationPreview')); jQuery_2_1_4('#designationTextBox').val(''); jQuery_2_1_4('#designationNameBox').val('');">
+                                Add
+                            </button>
+                        </div>
+                        <div class="col-md-6" id="designationPreview">
+                            <label>
+                                List Of Designations
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
-            
             <!-- Some Checkboxes for optional things -->
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingTwo">
                     <h4 class="panel-title">
-                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" onclick="if(jQuery('#glyphTwo').hasClass('glyphicon-menu-down')) jQuery('#glyphTwo').attr('class','glyphicon glyphicon-menu-right'); else jQuery('#glyphTwo').attr('class','glyphicon glyphicon-menu-down'); jQuery('#glyphOne').attr('class','glyphicon glyphicon-menu-right'); jQuery('#glyphThree').attr('class','glyphicon glyphicon-menu-right');">
-                            <span class="glyphicon glyphicon-menu-right" id="glyphTwo" aria-hidden="true">
-                            </span>
-                            Donor Options
-                        </a>
+                        Donor Options
                     </h4>
                 </div>
-                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div id="collapseTwo" role="tabpanel" aria-labelledby="headingTwo">
                     <div class="panel-body">
                         <input class="size_mod" type="checkbox" name="optionalList" id="tributeCb">
                             Allow Tribute Gifts -- (One Time gifts only)
@@ -156,95 +136,98 @@
                 </div>
             </div>
         </div>
+        
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <!-- Bootstrap requires a different version of jQuery than BBIS supplies. Use jQuery to distinguish between the two -->    
+        <script>var jQuery_2_1_4 = $.noConflict(true);</script>
         <script>
-            var templateData = {partId:"null", revenueId:"null", hostingUrl:"null", 
-                                paymentTwo:"false", postPaymentUri:"null",
-                                merchantAcctId:"null", postPaymentPageId:"null",
-                                allowCorporate:"false", allowRecurrence:"false", 
-                                recurrenceFrequency:"null", allowTribute:"false",
-                                serverTextValidation:false, highlightRedValidation:false,
-                                redTextValidation:false};
+            var templateData = {partId: null, revenueId: null, hostingUrl: null, 
+                                paymentTwo: false, postPaymentUri: null,
+                                merchantAcctId: null, postPaymentPageId: null,
+                                allowCorporate: false, allowRecurrence: false, 
+                                recurrenceFrequency: null, allowTribute: false};
                                 
-            jQuery(function () {
-                // Repopulating fields from saved object
+            jQuery_2_1_4(function () {
+                // Repopulating fields from saved object if the field is neither null nor undefined
 
-                if (typeof BLACKBAUD.api.customPartEditor.settings.AllowCorporate !== 'undefined') {
-                    jQuery('#corporateCb').attr('checked', BLACKBAUD.api.customPartEditor.settings.AllowCorporate);
+                if (typeof BLACKBAUD.api.customPartEditor.settings.AllowCorporate != null) {
+                    jQuery_2_1_4('#corporateCb').attr('checked', BLACKBAUD.api.customPartEditor.settings.AllowCorporate);
                 }
-                if (typeof BLACKBAUD.api.customPartEditor.settings.AllowRecurrence !== 'undefined') {
-                    jQuery('#recurrenceCb').attr('checked', BLACKBAUD.api.customPartEditor.settings.AllowRecurrence);
+                if (typeof BLACKBAUD.api.customPartEditor.settings.AllowRecurrence != null) {
+                    jQuery_2_1_4('#recurrenceCb').attr('checked', BLACKBAUD.api.customPartEditor.settings.AllowRecurrence);
                 }
-                if (typeof BLACKBAUD.api.customPartEditor.settings.AllowTribute !== 'undefined') {
-                    jQuery('#tributeCb').attr('checked', BLACKBAUD.api.customPartEditor.settings.AllowTribute);
+                if (typeof BLACKBAUD.api.customPartEditor.settings.AllowTribute != null) {
+                    jQuery_2_1_4('#tributeCb').attr('checked', BLACKBAUD.api.customPartEditor.settings.AllowTribute);
                 }
-                if (typeof BLACKBAUD.api.customPartEditor.settings.designations !=='undefined') {
+                if (typeof BLACKBAUD.api.customPartEditor.settings.designations != null) {
                     var tempDesignations = BLACKBAUD.api.customPartEditor.settings.designations;
                     for(var i = 0; i < tempDesignations.length; i++)    {
-                        if(typeof tempDesignations[i] !== 'undefined')  {
-                            addDesignation(tempDesignations[i].d_id, tempDesignations[i].d_name, jQuery('#designationPreview'));
+                        if(typeof tempDesignations[i] != null)  {
+                            addDesignation(tempDesignations[i].d_id, tempDesignations[i].d_name, jQuery_2_1_4('#designationPreview'));
                         }
                     }
                 }
-                if (typeof BLACKBAUD.api.customPartEditor.settings.MerchantAccountId !== 'undefined') {
+                if (typeof BLACKBAUD.api.customPartEditor.settings.MerchantAccountId != null) {
                     $('#merchIdText').val(BLACKBAUD.api.customPartEditor.settings.MerchantAccountId);
                     templateData.merchantAcctId = BLACKBAUD.api.customPartEditor.settings.MerchantAccountId;
                 }
-                if (typeof BLACKBAUD.api.customPartEditor.settings.BBSPReturnUri !== 'undefined') {
+                if (typeof BLACKBAUD.api.customPartEditor.settings.BBSPReturnUri != null) {
                     $('#postPaymentUriText').val(BLACKBAUD.api.customPartEditor.settings.BBSPReturnUri);
                     templateData.postPaymentUri = BLACKBAUD.api.customPartEditor.settings.BBSPReturnUri;
                 }
-                if (typeof BLACKBAUD.api.customPartEditor.settings.BBSPTemplateSitePageId !== 'undefined') {
+                if (typeof BLACKBAUD.api.customPartEditor.settings.BBSPTemplateSitePageId != null) {
                     $('#templateSideIdText').val(BLACKBAUD.api.customPartEditor.settings.BBSPTemplateSitePageId);
                     templateData.postPaymentPageId = BLACKBAUD.api.customPartEditor.settings.BBSPTemplateSitePageId;
                 }
                 
                 //Setting Event Listeners
-                jQuery("#partIdText").focusout(function()           { templateData.partId     = jQuery("#partIdText").val();    });
-                jQuery("#revenueIdText").focusout(function()        { templateData.revenueId  = jQuery("#revenueIdText").val(); });
-                jQuery("#hostUrlText").focusout(function()          { templateData.hostingUrl = jQuery("#hostUrlText").val();   });
+                jQuery_2_1_4("#partIdText").focusout(function()           { templateData.partId     = jQuery_2_1_4("#partIdText").val();    });
+                jQuery_2_1_4("#revenueIdText").focusout(function()        { templateData.revenueId  = jQuery_2_1_4("#revenueIdText").val(); });
+                jQuery_2_1_4("#hostUrlText").focusout(function()          { templateData.hostingUrl = jQuery_2_1_4("#hostUrlText").val();   });
                                 
                 //merchant settings
-                jQuery("#usePaymentRdo").click(function()           { templateData.paymentTwo = "true";  });
-                jQuery("#useMerchRdo").click(function()             { templateData.paymentTwo = "false"; });
+                jQuery_2_1_4("#usePaymentRdo").click(function()           { templateData.paymentTwo = "true";  });
+                jQuery_2_1_4("#useMerchRdo").click(function()             { templateData.paymentTwo = "false"; });
                 
-                jQuery("#postPaymentUriText").focusout(function()   { templateData.postPaymentUri    = jQuery("#postPaymentUriText").val(); });
-                jQuery("#merchIdText").focusout(function()          { templateData.merchantAcctId    = jQuery("#merchIdText").val();        });
-                jQuery("#templateSideIdText").focusout(function()   { templateData.postPaymentPageId = jQuery("#templateSideIdText").val(); });
+                jQuery_2_1_4("#postPaymentUriText").focusout(function()   { templateData.postPaymentUri    = jQuery_2_1_4("#postPaymentUriText").val(); });
+                jQuery_2_1_4("#merchIdText").focusout(function()          { templateData.merchantAcctId    = jQuery_2_1_4("#merchIdText").val();        });
+                jQuery_2_1_4("#templateSideIdText").focusout(function()   { templateData.postPaymentPageId = jQuery_2_1_4("#templateSideIdText").val(); });
                 
-                jQuery("#allowCorporateRdo").click(function()       { templateData.allowCorporate = "true";  });
-                jQuery("#disallowCorporate").click(function()       { templateData.allowCorporate = "false"; });
+                jQuery_2_1_4("#allowCorporateRdo").click(function()       { templateData.allowCorporate = "true";  });
+                jQuery_2_1_4("#disallowCorporate").click(function()       { templateData.allowCorporate = "false"; });
                 
                 //Recurrence settings
-                jQuery("#disallowRecurPaymentRdo").click(function() { templateData.allowRecurrence = "false"; });
-                jQuery("#allowRecurPaymentRdo").click(function()    { templateData.allowRecurrence = "true";  });
+                jQuery_2_1_4("#disallowRecurPaymentRdo").click(function() { templateData.allowRecurrence = "false"; });
+                jQuery_2_1_4("#allowRecurPaymentRdo").click(function()    { templateData.allowRecurrence = "true";  });
                 
-                jQuery("#anualRecurrenceRdo").click(function()      { templateData.recurrenceFrequency = "annually"; });
-                jQuery("#monthlyRecurrenceRdo").click(function()    { templateData.recurrenceFrequency = "monthly";  });
-                jQuery("#weeklyRecurrenceRdo").click(function()     { templateData.recurrenceFrequency = "weekly";   });
+                jQuery_2_1_4("#anualRecurrenceRdo").click(function()      { templateData.recurrenceFrequency = "annually"; });
+                jQuery_2_1_4("#monthlyRecurrenceRdo").click(function()    { templateData.recurrenceFrequency = "monthly";  });
+                jQuery_2_1_4("#weeklyRecurrenceRdo").click(function()     { templateData.recurrenceFrequency = "weekly";   });
                 
                 //Tribute settings
-                jQuery("#tributeCb").change(function() {
-                    if(jQuery(this).is(':checked')) { templateData.allowTribute = true; }
+                jQuery_2_1_4("#tributeCb").change(function() {
+                    if(jQuery_2_1_4(this).is(':checked')) { templateData.allowTribute = true; }
                     else { templateData.allowTribute = false; }
                 });
                 
-                jQuery("#corporateCb").change(function() {
-                    if(jQuery(this).is(':checked')) { templateData.allowCorporate = true; }
+                jQuery_2_1_4("#corporateCb").change(function() {
+                    if(jQuery_2_1_4(this).is(':checked')) { templateData.allowCorporate = true; }
                     else { templateData.allowCorporate = false; }
                 });
 
-                jQuery("#recurrenceCb").change(function() {
-                    if(jQuery(this).is(':checked')) { templateData.allowRecurrence = true; }
+                jQuery_2_1_4("#recurrenceCb").change(function() {
+                    if(jQuery_2_1_4(this).is(':checked')) { templateData.allowRecurrence = true; }
                     else { templateData.allowRecurrence = false; }
                 });
 
-                jQuery("#disallowTributeRdo").click(function() { templateData.allowTribute = "false"; });
+                jQuery_2_1_4("#disallowTributeRdo").click(function() { templateData.allowTribute = "false"; });
                 
                 BLACKBAUD.api.customPartEditor.onSave = function() {
                     // Save our settings
                     var allDesignations = [];
                     for(var i = 0; i < designations.length; i++) {
-                        if(typeof designations[i] !== 'undefined') { allDesignations.push({'d_name':designationNames[i],'d_id':designations[i]}); }
+                        if(typeof designations[i] != null) { allDesignations.push({'d_name':designationNames[i],'d_id':designations[i]}); }
                     }
                 
                     // Amend custom content part settings object
@@ -256,10 +239,7 @@
                         'BBSPTemplateSitePageId': templateData.postPaymentPageId,
                         'AllowTribute': templateData.allowTribute,
                         'AllowCorporate': templateData.allowCorporate,
-                        'AllowRecurrence': templateData.allowRecurrence,
-                        'ServerTextVal': templateData.serverTextValidation,
-                        'HighlightRedVal': templateData.highlightRedValidation,
-                        'redTextVal': templateData.redTextValidation
+                        'AllowRecurrence': templateData.allowRecurrence
                     };
                   
                   // Required to allow the settings to save and the part to close
@@ -270,7 +250,7 @@
 
 
             function usePledgeLevels(inWhere, value, amount) {
-                jQuery(inWhere).prepend('<input type="radio" name="previewDonationLevels" value='+value+'>'+amount+' --- '+value+'</input><br/>');
+                jQuery_2_1_4(inWhere).prepend('<input type="radio" name="previewDonationLevels" value='+value+'>'+amount+' --- '+value+'</input><br/>');
             }
 
             var designations =[];
@@ -280,8 +260,8 @@
                 designations.push(newDesignation);
                 designationNames.push(newDesignationName);
                 
-                var tempBtn = jQuery('<button/>', { text: 'delete', click: function() { (this).closest('div').remove(); removeDesignation(newDesignation); } });
-                var tempHtml = jQuery('<div/>');
+                var tempBtn = jQuery_2_1_4('<button/>', { text: 'delete', click: function() { (this).closest('div').remove(); removeDesignation(newDesignation); } });
+                var tempHtml = jQuery_2_1_4('<div/>');
                 tempHtml.append(tempBtn);
                 tempHtml.append(newDesignation+'--'+newDesignationName);
                 
@@ -302,8 +282,8 @@
             function addDonationAmount(donationName, donationAmount, prependHere) {
                 donationNames.push(donationName);
                 donationAmounts.push(donationAmount);
-                var tempDelBtn = jQuery('<button/>', { text: 'remove', click: function() { removeDonationAmount(donationName, prependHere); } });
-                var tempHtml = jQuery('<div/>');
+                var tempDelBtn = jQuery_2_1_4('<button/>', { text: 'remove', click: function() { removeDonationAmount(donationName, prependHere); } });
+                var tempHtml = jQuery_2_1_4('<div/>');
                 tempHtml.append(tempDelBtn);
                 tempHtml.append('<input type="radio" name="donationAmountRdo">'+donationName+' -- '+donationAmount+'</button>');
                 prependHere.prepend(tempHtml);
@@ -319,8 +299,8 @@
                 
                 fromHere.html("");
                 for(var x in donationNames) {
-                    var tempDelBtn = jQuery('<button/>', { text: 'remove', click: function() { removeDonationAmount(donationNames[x], fromHere); }});
-                    var tempHtml = jQuery('<div/>');
+                    var tempDelBtn = jQuery_2_1_4('<button/>', { text: 'remove', click: function() { removeDonationAmount(donationNames[x], fromHere); }});
+                    var tempHtml = jQuery_2_1_4('<div/>');
                     tempHtml.append(tempDelBtn);
                     tempHtml.append('<input type="radio" name="donationAmountRdo">'+donationNames[x]+' -- '+donationAmounts[x]+'</button>');
                     fromHere.prepend(tempHtml);
