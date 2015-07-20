@@ -558,7 +558,7 @@ function form_listeners()   {
     jQuery_2_1_4('#gift_frequency_selector').on('change', function()   {
 
         // Disable all recur form inputs
-        jQuery_2_1_4('.recur_weekly, .recur_nonweekly, /recur_annually').children('select').prop('disabled', true);
+        jQuery_2_1_4('.recur_weekly, .recur_nonweekly, .recur_annually').children('select').prop('disabled', true);
         
         // Hide all recur form inputs
         jQuery_2_1_4('.recur_nonweekly, .recur_annually, .recur_weekly').hide();
