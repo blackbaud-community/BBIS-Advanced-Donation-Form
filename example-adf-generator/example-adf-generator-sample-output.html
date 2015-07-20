@@ -1,5 +1,5 @@
 
-        <!-- Latest compiled and minified CSS -->
+    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
     <!-- Optional theme -->
@@ -72,10 +72,8 @@
         <!-- Donor.Address.Country -->
         <div class="form-group">
             <label for="Donor_Address_Country" class="col-md-3">Country:</label>
-            <!-- You may remove the generatred options and let the API populate the list at runtime -->
             <select id="country" name="Donor_Address_Country" required="">
-            <option value=""></option>
-            <!-- Remove Countries -->
+                <option value=""></option>
             </select>
             <span class="required_indicator">*</span>
         </div>
@@ -137,7 +135,6 @@
             <div id="designation_selectors" class="col-md-offset-3">
                 <div>
                     <select id="default_designation_selector">
-                    <!-- Remove Designations -->
                     </select>
                     <input type="text" placeholder="Donation Amount">
                     <button type="button" class="btn btn-success designation_btn" id="add_designation">+</button> <span class="required_indicator">*</span>
@@ -204,7 +201,6 @@
                     
                 </div>
 
-                <!-- Remove hasDatePicker class from input -->
                 <!-- Gift.Recurrence.StartDate -->
                 <div class="form-group">
                     <label for="Gift_Recurrence_StartDate" class="col-md-3">Start Date:</label>
@@ -212,7 +208,6 @@
                     <input id="gift_startdate_input" type="text" name="Gift_Recurrence_StartDate" disabled="true" hidden="true">
                 </div>
 
-                <!-- Remove hasDatePicker class from input -->
                 <!-- Gift.Recurrence.EndDate -->
                 <div class="form-group">
                     <label for="Gift_Recurrence_EndDate" class="col-md-3">End Date:</label>
@@ -239,12 +234,12 @@
                     <input id="tribute_lastname_input" type="text" name="Gift_Tribute_TributeDefinition_LastName" disabled="true">
                 </div>
 
-                <!-- TODO: What is a Tribute type? Is it admin or user specified? -->
                 <!-- Gift.Tribute.TributeDefinition.Type -->
+                <!-- TODO: Use relevant tribute information to populate input -->
                 <input type="text" name="Gift_Tribute_TributeDefinition_Type" style="display:none;" disabled="true">
 
-                <!-- TODO: What is a Tribute description? Is it admin or user specified? -->
                 <!-- Gift.Tribute.TributeDefinition.Description -->
+                <!-- TODO: Use relevant tribute information to populate input -->
                 <input type="text" name="Gift_Tribute_TributeDefinition_Description" style="display:none;" disabled="true">
 
                 <!-- Gift.Tribute.Acknowledgee -->
@@ -272,7 +267,6 @@
                         <label for="Gift_Tribute_Acknowledgee_Country" class="col-md-3">Acknowledgee's Country:</label>
                         <select id="ack_country" name="Gift_Tribute_Acknowledgee_Country" disabled="true">
                             <option value=""></option>
-                        <!-- Remove Countries -->
                         </select>
                     </div>
 
@@ -339,32 +333,15 @@
 <div class="error_text" id="complete_donation_error" style="display:none;">
     There was an error processing your donation. Your credit card has not been charged, and you will not receive a bill for this transaction. Please try again later.
 </div>
-<div class="modal fade" id="html_template_modal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="html_template_title">HTML Template Code</h4>
-            </div>
-            <div class="modal-body">
-                <textarea id="html_template_text" readonly=""></textarea>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-
-<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-<!-- Latest compiled and minified JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Bootstrap requires a different version of jQuery than BBIS supplies. Use jQuery to distinguish between the two -->    
+<script>var jQuery_2_1_4 = $.noConflict(true);</script>
 <script>
 
 // On Page Load
-$(function()    {
+jQuery_2_1_4(function()    {
 
     // Check to see if we're returning from the payment page to complete the donation
     var t_id = BLACKBAUD.api.querystring.getQueryStringValue('t');
@@ -372,7 +349,7 @@ $(function()    {
         // Show confirmation page
         confirmDonation(t_id);
     } else {
-    // TODO: Fill in your own options here. Pass them off to init_form function
+    // TODO: Fill in your own options and uncomment the object below.
 
     // var form_options = {};
     // form_options.settings = {};
@@ -389,27 +366,25 @@ $(function()    {
  *  Displays the confirmation / receipt to the user. Hides the donation form.
  **/
 function confirmDonation(t_id)  {
-    $('#donation_div').hide();
-    var donation_service = new BLACKBAUD.api.DonationService(
-        $('.BBDonationApiContainer').data('partid')
-    );
+    jQuery_2_1_4('#donation_div').hide();
+    var donation_service = new BLACKBAUD.api.DonationService( jQuery_2_1_4('.BBDonationApiContainer').data('partid') );
 
     // Function called if completeBBSPDonation method succeeds
     var success = function(data)   {
         // Show confirmation HTML
         donation_service.getDonationConfirmationHtml(t_id, function(html)   {
             // Called if getDonationConfirmationHtml succeeds
-            $('#confirmation_success').append(html);
-            $('#confirmation_success').show();
+            jQuery_2_1_4('#confirmation_success').append(html);
+            jQuery_2_1_4('#confirmation_success').show();
         }, function(error)  {
             // Called if getDonationConfirmationHtml fails
-            $('#confirmation_fail').show();
+            jQuery_2_1_4('#confirmation_fail').show();
         });
     }
 
     // Function called if completeBBSPDonation method fails
     var error = function(returnedErrors)    {
-        $('#complete_donation_error').show();
+        jQuery_2_1_4('#complete_donation_error').show();
     }
 
     donation_service.completeBBSPDonation(t_id, success, error);
@@ -434,7 +409,7 @@ function init_form(options)    {
         numberOfMonths: 1,
         minDate: new Date(),
         onClose: function(selectedDate) {
-            $('#user_gift_enddate_picker').datepicker("option", "minDate", selectedDate);
+            jQuery_2_1_4('#user_gift_enddate_picker').datepicker("option", "minDate", selectedDate);
         }
     });
 
@@ -446,46 +421,48 @@ function init_form(options)    {
         changeMonth: true,
         numberOfMonths: 1,
         onClose: function(selectedDate) {
-            $('#user_gift_startdate_picker').datepicker("option", "maxDate", selectedDate);
+            jQuery_2_1_4('#user_gift_startdate_picker').datepicker("option", "maxDate", selectedDate);
         }
     });
 
     // Keep track of the number of designation selectors -- Minimum 1
     var num_designations = 1;
-    $('#add_designation').click(function()  {
+    jQuery_2_1_4('#add_designation').click(function()  {
         addDesignation(num_designations, options.settings.designations);
         num_designations++;
     });
 
     var html_string = "";
-    $.each(options.settings.designations, function(index, value)  {
+    if (typeof options.settings.designations !== "undefined")   {
+        jQuery_2_1_4.each(options.settings.designations, function(index, value)  {
         html_string += "<option value='" + value.d_id + "'>" + value.d_name + "</option> ";
-    });
-    $('#default_designation_selector').append(html_string);
+        });
+        jQuery_2_1_4('#default_designation_selector').append(html_string);
+    }
 
     // Add values to hidden form elements
-    $('[name="MerchantAccountId"]').val(options.settings.MerchantAccountId);
-    $('[name="BBSPReturnUri"]').val(options.settings.BBSPReturnUri);
-    $('[name="BBSPTemplateSitePageId"]').val(options.settings.BBSPTemplateSitePageId);
+    jQuery_2_1_4('[name="MerchantAccountId"]').val(options.settings.MerchantAccountId);
+    jQuery_2_1_4('[name="BBSPReturnUri"]').val(options.settings.BBSPReturnUri);
+    jQuery_2_1_4('[name="BBSPTemplateSitePageId"]').val(options.settings.BBSPTemplateSitePageId);
 
     // Country and State selectors
     var statecountryselectors = [['#country', '#state'], ['#ack_country', '#ack_state']];
   
     // Load Countries using bbis api
-    $.each(statecountryselectors, function(index, value)    {
-        var selectCountry   = $(value[0]);
-        var selectState     = $(value[1]);
-        $.get(BLACKBAUD.api.pageInformation.rootPath + '/webapi/country', function(countries) {
+    jQuery_2_1_4.each(statecountryselectors, function(index, value)    {
+        var selectCountry   = jQuery_2_1_4(value[0]);
+        var selectState     = jQuery_2_1_4(value[1]);
+        jQuery_2_1_4.get(BLACKBAUD.api.pageInformation.rootPath + '/webapi/country', function(countries) {
             for (var i = 0, j = countries.length; i < j; i++) {
                 selectCountry.append('<option value="' + countries[i].Description + '" ' + 'data-country-id="' + countries[i].Id + '">' + countries[i].Description + '</option>');
             }
         });
           
         // Watch Countries Change
-        $(selectCountry).on('change', function() {
+        jQuery_2_1_4(selectCountry).on('change', function() {
             selectState.html('');        
             // Load States using bbis api
-            $.get(BLACKBAUD.api.pageInformation.rootPath + 'webapi/country/' + $(this).find(":selected").attr('data-country-id') + '/state', function(states) {
+            jQuery_2_1_4.get(BLACKBAUD.api.pageInformation.rootPath + 'webapi/country/' + jQuery_2_1_4(this).find(":selected").attr('data-country-id') + '/state', function(states) {
                 for (var i = 0, j = states.length; i < j; i++) {
                     selectState.append('<option value="' + states[i].Abbreviation + '">' + states[i].Description + '</option>');
                 }
@@ -493,13 +470,14 @@ function init_form(options)    {
         });
     });
 
+    // TODO: Does this match the GUID in your database?
     // GUID for Title CodeTable
     var TITLE_GUID  = "456FFD4C-0FBF-49DB-A503-0726F86E2A39";
-    var selectTitle = $('#donor_selector');
+    var selectTitle = jQuery_2_1_4('#donor_selector');
 
     // Populate Title selector
-    $.get(BLACKBAUD.api.pageInformation.rootPath + 'webapi/codetable/' + TITLE_GUID, function(titles)  {
-        $.each(titles, function(index, value)   {
+    jQuery_2_1_4.get(BLACKBAUD.api.pageInformation.rootPath + 'webapi/codetable/' + TITLE_GUID, function(titles)  {
+        jQuery_2_1_4.each(titles, function(index, value)   {
             selectTitle.append('<option value="' + value.Description + '">' + value.Description + '</option>');
         });
     });
@@ -514,122 +492,109 @@ function init_form(options)    {
  **/
 function form_listeners()   {
 
-    /*************** MAY REMOVE *************************************/
-    // Populate modal HTML text area
-    $('#html_template_modal').on('show.bs.modal', function (event)  {
-        $(this).find('.modal-body textarea').val($('#donation_div').parent().html());
-    });
-    /***************************************************************/
-
     /* Begin Corporate donor inputs */
-    $('#iscorporate_yes').click(function()  {
-        $('#corporateinput').children('input').prop('disabled', false);
-        $('#corporateinput').show();
+    jQuery_2_1_4('#iscorporate_yes').click(function()  {
+        jQuery_2_1_4('#corporateinput').children('input').prop('disabled', false);
+        jQuery_2_1_4('#corporateinput').show();
     });
 
-    $('#iscorporate_no').click(function()   {
-        $('#corporateinput').children('input').prop('disabled', true);
-        $('#corporateinput').hide();
+    jQuery_2_1_4('#iscorporate_no').click(function()   {
+        jQuery_2_1_4('#corporateinput').children('input').prop('disabled', true);
+        jQuery_2_1_4('#corporateinput').hide();
     });
     /* End Corporate donor inputs */
 
     /* Begin frequency inputs */
-    $('#frequency_recurring').click(function()    {
-        $('#frequency_onetime').prop('checked', false);
-        $('#frequencyinput').children('.form-group').children('input').prop('disabled', false);
-        $('#frequencyinput').children('.form-group').children('select').prop('disabled', false);
-        $('#frequencyinput').show();
+    jQuery_2_1_4('#frequency_recurring').click(function()    {
+        jQuery_2_1_4('#frequency_onetime').prop('checked', false);
+        jQuery_2_1_4('#frequencyinput').children('.form-group').children('input').prop('disabled', false);
+        jQuery_2_1_4('#frequencyinput').children('.form-group').children('select').prop('disabled', false);
+        jQuery_2_1_4('#frequencyinput').show();
     });
 
-    $('#frequency_onetime').click(function() {
-        $('#frequency_recurring').prop('checked', false);
-        $('#frequencyinput').children('.form-group').children('input').prop('disabled', true);
-        $('#frequencyinput').children('.form-group').children('select').prop('disabled', true);
-        $('#frequencyinput').hide();
+    jQuery_2_1_4('#frequency_onetime').click(function() {
+        jQuery_2_1_4('#frequency_recurring').prop('checked', false);
+        jQuery_2_1_4('#frequencyinput').children('.form-group').children('input').prop('disabled', true);
+        jQuery_2_1_4('#frequencyinput').children('.form-group').children('select').prop('disabled', true);
+        jQuery_2_1_4('#frequencyinput').hide();
     });
     /* End frequency inputs */
 
     /* Begin tribute inputs */
-    $('#tribute_yes').click(function()  {
-        $('#tribute_no').prop('checked', false);
-        $('#tributeinput').children('.form-group').children('input').prop('disabled', false);
-        $('#tributeinput').children('input').prop('disabled', false);
-        $('#tributeinput').show();
+    jQuery_2_1_4('#tribute_yes').click(function()  {
+        jQuery_2_1_4('#tribute_no').prop('checked', false);
+        jQuery_2_1_4('#tributeinput').children('.form-group').children('input').prop('disabled', false);
+        jQuery_2_1_4('#tributeinput').children('input').prop('disabled', false);
+        jQuery_2_1_4('#tributeinput').show();
     });
 
-    $('#tribute_no').click(function()   {
-        $('#tribute_yes').prop('checked', false);
-        $('#acknowledgee_no').trigger("click");
-        $('#tributeinput').children('.form-group').children('input').prop('disabled', true);
-        $('#tributeinput').children('input').prop('disabled', true);
-        $('#tributeinput').hide();
+    jQuery_2_1_4('#tribute_no').click(function()   {
+        jQuery_2_1_4('#tribute_yes').prop('checked', false);
+        jQuery_2_1_4('#acknowledgee_no').trigger("click");
+        jQuery_2_1_4('#tributeinput').children('.form-group').children('input').prop('disabled', true);
+        jQuery_2_1_4('#tributeinput').children('input').prop('disabled', true);
+        jQuery_2_1_4('#tributeinput').hide();
     });
     /* End tribute inputs */
 
     /* Begin acknowledgee inputs */
-    $('#acknowledgee_yes').click(function() {
-        $('#acknowledgee_no').prop('checked', false);
-        $('#acknowledgeeinput').children('.form-group').children('input').prop('disabled', false);
-        $('#acknowledgeeinput').children('.form-group').children('select').prop('disabled', false);
-        $('#acknowledgeeinput').show();
+    jQuery_2_1_4('#acknowledgee_yes').click(function() {
+        jQuery_2_1_4('#acknowledgee_no').prop('checked', false);
+        jQuery_2_1_4('#acknowledgeeinput').children('.form-group').children('input').prop('disabled', false);
+        jQuery_2_1_4('#acknowledgeeinput').children('.form-group').children('select').prop('disabled', false);
+        jQuery_2_1_4('#acknowledgeeinput').show();
     });
 
-    $('#acknowledgee_no').click(function()  {
-        $('#acknowledgee_yes').prop('checked', false);
-        $('#acknowledgeeinput').children('.form-group').children('input').prop('disabled', true);
-        $('#acknowledgeeinput').children('.form-group').children('select').prop('disabled', true);
-        $('#acknowledgeeinput').hide();
+    jQuery_2_1_4('#acknowledgee_no').click(function()  {
+        jQuery_2_1_4('#acknowledgee_yes').prop('checked', false);
+        jQuery_2_1_4('#acknowledgeeinput').children('.form-group').children('input').prop('disabled', true);
+        jQuery_2_1_4('#acknowledgeeinput').children('.form-group').children('select').prop('disabled', true);
+        jQuery_2_1_4('#acknowledgeeinput').hide();
     });
     /* End acknowledgee inputs */
 
 
     // Gift Recurrence Options
-    $('#gift_frequency_selector').on('change', function()   {
+    jQuery_2_1_4('#gift_frequency_selector').on('change', function()   {
 
         // Disable all recur form inputs
-        $('.recur_weekly').children('select').prop('disabled', true);
-        $('.recur_nonweekly').children('select').prop('disabled', true);
-        $('.recur_annually').children('select').prop('disabled', true);
+        jQuery_2_1_4('.recur_weekly, .recur_nonweekly, /recur_annually').children('select').prop('disabled', true);
         
         // Hide all recur form inputs
-        $('.recur_nonweekly').hide();
-        $('.recur_annually').hide();
-        $('.recur_weekly').hide();
+        jQuery_2_1_4('.recur_nonweekly, .recur_annually, .recur_weekly').hide();
 
-        var selection = parseInt($('#gift_frequency_selector').val());
+        var selection = parseInt(jQuery_2_1_4('#gift_frequency_selector').val());
         switch (selection)  {
             case 1:
                 // Weekly - Show DayOfWeek input, hide/disable others
-                $('.recur_weekly').children('select').prop('disabled', false);
-                $('.recur_weekly').show();
+                jQuery_2_1_4('.recur_weekly').children('select').prop('disabled', false);
+                jQuery_2_1_4('.recur_weekly').show();
                 break;
             case 2:
             case 3:
                 // Monthly/Quarterly - Show DayOfMonth input, hide/disable others
-                $('.recur_nonweekly').children('select').prop('disabled', false);
-                $('.recur_nonweekly').show();
+                jQuery_2_1_4('.recur_nonweekly').children('select').prop('disabled', false);
+                jQuery_2_1_4('.recur_nonweekly').show();
                 break;
             case 4:
                 // Annually - Show DayOfMonth and Month input, hide/disable others
-                $('.recur_nonweekly').children('select').prop('disabled', false);
-                $('.recur_annually').children('select').prop('disabled', false);
-                $('.recur_nonweekly').show();
-                $('.recur_annually').show();
+                jQuery_2_1_4('.recur_nonweekly, .recur_annually').children('select').prop('disabled', false);
+                jQuery_2_1_4('.recur_nonweekly, .recur_annually').show();
                 break;
         }
     });
 
     // Form submit listener
-    $( 'form' ).on('submit', function( event ) {
+    jQuery_2_1_4( 'form' ).on('submit', function( event ) {
         event.preventDefault();
-        var user_input = $( this ).serializeArray();
-        $('#submit_button').prop('disabled', true);
-        $('#submit_button').text('Please wait...');
+        var user_input = jQuery_2_1_4( this ).serializeArray();
+        jQuery_2_1_4('#submit_button').prop('disabled', true);
+        jQuery_2_1_4('#submit_button').text('Please wait...');
 
         // Show confirmation if user opted for Bill Me Later
-        if ($('input:radio[name = "Gift_PaymentMethod"]:checked').val() == "1")  {
-            $('#donation_div').hide();
-            $('#confirmation_div').html(
+        if (jQuery_2_1_4('input:radio[name = "Gift_PaymentMethod"]:checked').val() == "1")  {
+            jQuery_2_1_4('#donation_div').hide();
+            jQuery_2_1_4('#confirmation_div').html(
                 "Thanks for your donation! Check your email for confirmation."
             );
         }
@@ -637,7 +602,7 @@ function form_listeners()   {
     });
 
     // Display the donation form after layout is complete
-    $('#donation_div').show();
+    jQuery_2_1_4('#donation_div').show();
 }
 
 /**
@@ -646,15 +611,17 @@ function form_listeners()   {
  *  objects. Sets up the remove button for additional designations
  **/
 function addDesignation(designation_number, designations) {
-    var html_string = "<div><select>"; 
-    $.each(designations, function(index, value)  {
-        html_string += "<option value='" + value.d_id + "'>" + value.d_name + "</option>";
-    });
-    html_string += "</select> <input type='text' placeholder='Donation Amount'> <button type='button' class='btn btn-danger designation_btn' id='del_designation_" + designation_number + "'>-</button></div>";
-    $('#designation_selectors').append(html_string);
-    $('#del_designation_' + designation_number).click(function()  {
-        $(this).parent('div').remove();
-    });
+    if (typeof designations !== "undefined") {
+        var html_string = "<div><select>"; 
+        jQuery_2_1_4.each(designations, function(index, value)  {
+            html_string += "<option value='" + value.d_id + "'>" + value.d_name + "</option>";
+        });
+        html_string += "</select> <input type='text' placeholder='Donation Amount'> <button type='button' class='btn btn-danger designation_btn' id='del_designation_" + designation_number + "'>-</button></div>";
+        jQuery_2_1_4('#designation_selectors').append(html_string);
+        jQuery_2_1_4('#del_designation_' + designation_number).click(function()  {
+            jQuery_2_1_4(this).parent('div').remove();
+        });
+    }
 }
 
 /**
@@ -665,7 +632,7 @@ function gatherData(user_input) {
     var post_body = {};
 
     // Iterate through the collection of input name/value objects.
-    $.each(user_input, function(input_index, input_obj)   {
+    jQuery_2_1_4.each(user_input, function(input_index, input_obj)   {
         /**
          *  Create an array of the input names. These will serve as
          *  'key' values for the post body. They directly match up with
@@ -699,10 +666,10 @@ function gatherData(user_input) {
 
     // Collect Designation data from form and add to the POST body
     var designations = [];
-    $('#designation_selectors').children('div').each(function() {
+    jQuery_2_1_4('#designation_selectors').children('div').each(function() {
         var designation_object = {
-            'Amount': Number($(this).children('input').val()),
-            'DesignationId': $(this).children('select').val()
+            'Amount': Number(jQuery_2_1_4(this).children('input').val()),
+            'DesignationId': jQuery_2_1_4(this).children('select').val()
         };
         designations.push(designation_object);
     });
@@ -712,7 +679,7 @@ function gatherData(user_input) {
     delete post_body.ScriptManager1;
     delete post_body[""];
     // Removes breadcrumb inputs
-    $.each(post_body, function(name, value) {
+    jQuery_2_1_4.each(post_body, function(name, value) {
         if (name.lastIndexOf('ctl', 0) === 0) {
             delete post_body[name];
         }
@@ -741,7 +708,7 @@ function gatherData(user_input) {
 function post_donation(data)    {
     // Create an instance of the DonationService
     var donation_service = new BLACKBAUD.api.DonationService(
-        $('.BBDonationApiContainer').data('partid')
+        jQuery_2_1_4('.BBDonationApiContainer').data('partid')
     );
 
     // What to do if the donation posts sucessfully. Called prior to redirecting to payment page
