@@ -1,0 +1,12 @@
+/* css other than bootstrap */
+.bbspLoadingOverlay {
+width: 100%;
+height: 100%;
+left: 0;
+top: 0;
+position: fixed;
+z-index: 9999999;
+background-color: grey;
+opacity: 0.8;
+display: none;
+}

@@ -10,7 +10,7 @@ $(function() {
   // Load Countries
   $.get(BLACKBAUD.api.pageInformation.rootPath + '/webapi/country', function(countries) {
     for (var i = 0, j = countries.length; i < j; i++) {
-      selectCountry.append('<option value="' + countries[i].Id + '">' + countries[i].Description + '</option>');
+      selectCountry.append('<option value="' + countries[i].Id + '" iso="'+countries[i].ISO+'">' + countries[i].Description + '</option>');
     }
   });
   
@@ -21,7 +21,7 @@ $(function() {
     $.get(BLACKBAUD.api.pageInformation.rootPath + '/webapi/country/' + $(this).val() + '/state', function(states) {
       selectState.html('');
       for (var i = 0, j = states.length; i < j; i++) {
-        selectState.append('<option value="' + states[i].Id + '">' + states[i].Description + '</option>');
+        selectState.append('<option value="' + states[i].Id + '" iso="'+states[i].ISO+'">' + states[i].Description + '</option>');
       }
     });
   });
