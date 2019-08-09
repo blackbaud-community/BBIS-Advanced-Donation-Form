@@ -1,0 +1,97 @@
+<div id="directDebitSection">
+        <div class="formrow" id="tr_DDPDFInstructions">
+            <div colspan="3">
+                <span><i>In order to set up a Direct Debit instruction
+                    online, you must be the account holder of a personal bank or building society account.
+                    If you are not the only required signatory on your account or you would rather send
+                    us a paper version please
+                    <a ID="lnkDDPDF" title="Direct Debit PDF" href="DirectDebit.ddpdf"
+                        Target="_blank" rel="noopener noreferrer">click here</a></i>
+	            </span>
+            </div>
+        </div>
+        <div class="formrow">
+                <label ID="lblFinancialLBL">Financial Institution:</label>
+                <input type="text" ID="txtFinancialInstitution" MaxLength="100"/>
+        </div>
+        <div class="formrow">
+                <label ID="lblBranchName">Branch Name:</label>
+                <input type="text" ID="txtBranchName" MaxLength="100"/>
+        </div>
+        <div class="formrow" id="tr_BankingSystemType">
+                <label ID="lblBankingSystemType">Banking System Type:</label>
+                <select ID="ddlBankingSystemType"></select>
+        </div>
+        <div class="formrow">
+                <label ID="lblRoutNumLBL">Routing Number:</label>
+                <input type="text" ID="txtRoutingNumber" MaxLength="9" />
+               <!-- <asp:CustomValidator ID="cvRoutingNumber"  ClientValidationFunction="RoutingNumberClientValidation"  />   --> 
+  
+                <a ID="lnk_BankHelp" title="Display help details in another window" style="cursor:pointer;">
+	<img src="images/help-32_1.gif" alt="help" title="Help" style="height:32px;width:36px;vertical-align:bottom; border:0;" />
+                </a>
+        </div>
+        <div class="formrow" id="tr_CanadaTransitNum">
+                <label ID="lblCanadaTransitNum">Transit Number:</label>
+                <input type="text" ID="txtCanTransitNumber" MaxLength="5"/>
+        </div>
+        <div class="formrow">
+                <label ID="lblAccountNumber">Account Number:</label>
+                <span id="spn_AccountNo">
+                    <input type="text" ID="txtAccountNumber" MaxLength="20"/>
+                </span>
+                <span id="spn_AccountNoNZ">
+                    <input type="text" ID="txtAccountNumberNZ" Width="30" MaxLength="7"/>
+					<span>-</span>
+                    <input type="text" ID="txtSuffixNZ" Width="20" MaxLength="3" />
+                    <label ID="lblSuffixNZ" Visible="false"></label>
+                </span>
+                    </div>
+        <div class="formrow" id="tr_AccountType">
+                <label ID="lblAccountType">Account Type:</label>
+                <select ID="ddlAccountType"></select>
+        
+        </div>
+        <div class="formrow">
+                <label ID="lblAccountHolderName">Account Holder's Name:</label>
+                <input type="text" ID="txtAccountHolder" MaxLength="50"/>
+        </div>
+        <div class="formrow" id="tr_CurrentDate" >
+                <label ID="lblDebitDate">Date:</label>
+                <label ID="lbl_CurrentDate"></label>
+        </div>
+        <div class="formrow" id="tr_OrigNumber">
+                <label ID="lblOriginatorID">Service user's ID number:</label>
+                <label ID="lbl_OrigNumber"></label>
+        </div>
+        <div id="tr_DDBankInstructions">
+            <span colspan="3">
+                <p>
+                    <label><b>Instruction to your Bank or Building Society</b></label>
+                </p>
+                                   <label ID="lbl_DDBankInstructions">
+<i>Please pay %1 Direct Debits from the account detailed in this Instruction subject to the safeguards assured by the Direct Debit Guarantee. I understand that this Instruction may remain with %1 and, if so, details will be passed electronically to my Bank/Building Society.</i>
+					</label>						
+                                
+                    <label>
+<i>Banks and Building Societies may not accept Direct Debit Instructions for some types of account.</i>
+                    </label>
+                
+            </span>
+        </div>
+        <div id="tr_DDInstructions">
+            <span colspan="3">
+                <img src="images\dlogo.gif" alt="Direct Debit" title="Direct Debit" style="text-align: center;" />
+                <a ID="lnk_DDGuarantee" title="Display the Direct Debit Guarantee in another window" style="cursor:pointer;color:blue;text-decoration:underline;">The Direct Debit Guarantee</a>
+			</span>
+        </div>
+        <div id="tr_DDPDFInstructions2">
+            <span colspan="2">
+                <p>
+                    <label>
+<i>By clicking 'Donate Now' you are confirming that you are the account holder and that you are the only person required to authorise debits from this account.</i>
+		</label>
+                </p>
+            </span>
+        </div>
+   </div>

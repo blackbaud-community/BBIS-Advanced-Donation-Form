@@ -5,6 +5,8 @@ This repo contains simplified examples of using the Advanced Donation Form part 
 
 0. Barebones
 0. Payment 2.0
+0. Blackbaud Checkout
+0. Direct Debit
 0. Recurrence
 0. Tribute
 0. Blackbaud Secure Payments
