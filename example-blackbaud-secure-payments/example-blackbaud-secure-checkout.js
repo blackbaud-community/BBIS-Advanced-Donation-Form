@@ -133,8 +133,8 @@ $(function() {
 	//this is called when the payment is completed
     function handleCheckoutComplete(event, tranToken) {
         
-        if (tranToken) {
-            donation.TokenId = tranToken;
+        if (event && event.detail && event.detail.transactionToken) {
+            donation.TokenId = event.detail.transactionToken;
             ds.checkoutDonationComplete(donation, success, error);
         }
         else {
