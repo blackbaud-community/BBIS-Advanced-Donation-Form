@@ -283,13 +283,15 @@
 	//this is called when the payment is completed
     function handleCheckoutComplete(event, tranToken) {
         $("#bbspLoadingOverlay").show();
-        if (event && event.detail && event.detail.transactionToken) {
-            data.TokenId = event.detail.transactionToken;
+		var Id=tranToken ? tranToken :(event?(event.detail?(event.detail.transactionToken?event.detail.transactionToken:null):null):null);
+        if (Id) {
+            data.TokenId = Id;
             ds.checkoutDonationComplete(data, handlePaymentComplete, handleDonationCreateFailed);
         }
         else {
             handleError();
         }
+		UnBindPaymentCheckoutEvents();
         return false;
     }
 

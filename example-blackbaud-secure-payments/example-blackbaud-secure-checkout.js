@@ -132,14 +132,17 @@ $(function() {
 
 	//this is called when the payment is completed
     function handleCheckoutComplete(event, tranToken) {
+        var Id=tranToken ? tranToken :(event?(event.detail?(event.detail.transactionToken?event.detail.transactionToken:null):null):null);
+		
         
-        if (event && event.detail && event.detail.transactionToken) {
-            donation.TokenId = event.detail.transactionToken;
+        if (Id) {
+            donation.TokenId = Id;
             ds.checkoutDonationComplete(donation, success, error);
         }
         else {
            console.log(error);
         }
+		UnBindPaymentCheckoutEvents();
         return false;
     }
 
