@@ -58,6 +58,7 @@
       // See REST api tech reference for more information on the Type field
       donation.Tribute.TributeDefintion = {
         Type: 'Tribute',      
+		Name: $('#tribute-first-name') + " " + $('#tribute-last-name'),	
         FirstName: $('#tribute-first-name'),
         LastName: $('#tribute-last-name'),
         Description: $('tribute-description')
