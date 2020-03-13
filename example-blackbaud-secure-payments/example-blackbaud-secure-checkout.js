@@ -2,6 +2,8 @@
 (function($) {
 
 // Let's make sure the DOM is ready
+
+var IsPopUpLoaded=false;
 $(function() {
 
   // Create an instance of the DonationService
@@ -28,11 +30,13 @@ $(function() {
 
   // Create our success handler
   var success = function(returnedDonation) {
+	  IsPopUpLoaded=false;
     console.log(returnedDonation);
   };
 
   // Create our error handler
   var error = function(returnedErrors) {
+	  IsPopUpLoaded=false;
     console.log('Error!');
   };
   
@@ -106,8 +110,9 @@ $(function() {
         if (!opened) {
 
             opened = true;
+			IsPopUpLoaded=true;
             var url = $("#bbCheckoutPaymentIframe").prop('src');
-            var tid = getUrlVars(url)["t"];
+            var tid = url ? getUrlVars(url)["t"] : $('#paymentForm').find("input[name*='transactiontoken']").val();
 
             //save transaction id in global variable. Will be used throughout the transaction
             this.transactionIDl = tid;
@@ -154,6 +159,7 @@ $(function() {
     //Cancel Donation if user close checkout popup
     function handleCheckoutCancelled() {
         try {
+			IsPopUpLoaded=false;
             ds.checkoutDonationCancel(donation, success, error);
         }
         catch (e) {
@@ -200,6 +206,14 @@ $(function() {
     // Send the donation
 	ProcessCCPayment()
   });
+  
+    //Attach the event on window close   
+	$(window).on('beforeunload', function (e) {
+       if (IsPopUpLoaded) {
+           e.preventDefault();
+           return "";
+       }
+      });
 
 });
 }(jQuery));
