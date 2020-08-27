@@ -122,7 +122,7 @@ $(function() {
         return false;
     }
 
-	//when we cancel the payment pop up hen unbind all the binded events on checkout popup
+	//when we cancel the payment pop up then unbind all the binded events on checkout popup
     function UnBindPaymentCheckoutEvents() {
         $(document).unbind("checkoutComplete");
         $(document).unbind("checkoutLoaded");
