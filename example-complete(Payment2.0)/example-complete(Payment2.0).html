@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>ADF - Complete Example(Payment 2.0)</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.2.0/css/bootstrap.min.css">
+
+    <script type="text/javascript">
+
+        /*------------------------------------------- PART CONFIGURATION - SECTION START -------------------------------------------*/
+
+        var designationQueryId = "8d9fccdf-dea8-4590-8ec2-355a4c59df04";  /* Ad-hoc Query of Designation Type With Enable query for CMS REST API */
+
+        var consentPartId = parseInt($('.BBDonationApiContainer').attr('partid'), 10);
+
+        var cnstType = ($('.BBDonationApiContainer').attr('cnsttype') == "True");
+
+            /*------------------------------------------- PART CONFIGURATION - SECTION END -------------------------------------------*/
+
+    </script>
+
+</head>
+<body>
+<div class="donationForm container">
+        <div class="alert" style="background-color:#b6cbe5;">
+            <h3>Advanced Donation Form <small>Complete Example(Payment 2.0)</small></h3>
+        </div>
+        <div class="validation"></div>
+        <div class="consentValidation" id="inline" style="display:none"></div>
+        <div class="form">
+            <fieldset class="donationInformation">
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Gift Information</span></div>
+                </div>
+                <div class="row">
+                    <!-- *********************************************** GIFT AMOUNT - SECTION START *********************************************** -->
+                    <div class="col-sm-5">
+                        <div class="giftAmount">
+                            <label class="required">Select Gift Amount:</label>
+                            <ul class="list-group">
+                                <li>
+                                    <input id="amt1000" type="radio" name="radioAmount" value="1000" />
+                                    <label for="amt1000">
+                                        <span class="term">Platinum</span>
+                                        <span class="value">$1,000</span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <input id="amt500" type="radio" name="radioAmount" value="500" />
+                                    <label for="amt500">
+                                        <span class="term">Gold</span>
+                                        <span class="value">$500</span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <input id="amt100" type="radio" name="radioAmount" value="100" />
+                                    <label for="amt100">
+                                        <span class="term">Silver</span>
+                                        <span class="value">$100</span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <input id="amt25" type="radio" name="radioAmount" value="25" />
+                                    <label for="amt25">
+                                        <span class="term">Bronze</span>
+                                        <span class="value">$25</span>
+                                    </label>
+                                </li>
+                                <li class="other">
+                                    <input id="amtOther" type="radio" name="radioAmount" value="-1" checked="checked" />
+                                    <label for="amtOther">
+                                        <span class="term">Enter an amount</span>
+                                    </label>
+                                    <input id="txtAmount" type="text" placeholder="$">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- *********************************************** GIFT AMOUNT - SECTION END *********************************************** -->
+                    <div class="col-sm-7">
+                        <div class="recurrence">
+                            <label class="required">Recurrence:</label>
+                            <ul class="list-group">
+                                <li>
+                                    <input id="recOneTime" type="radio" name="radioRecurrence" value="0" checked="checked" />
+                                    <label for="recOneTime">
+                                        Make a one time gift.
+                                    </label>
+                                </li>
+                                <li>
+                                    <input id="recMonthly" type="radio" name="radioRecurrence" value="1" />
+                                    <label for="recMonthly">
+                                        Recurring Gift.
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- *********************************************** RECURRING GIFT - SECTION START *********************************************** -->
+
+                        <div id="divRecurringGift" style="display:none;">
+                            <h5>What's good?</h5>
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    I want to pledge above amount to the Avengers Initiative in
+                                </div>
+                                <div class="col-sm-2">
+                                    <input id="number-of-installments" type="text" class="form-control" />
+                                </div>
+                                <div class="col-sm-1">
+                                    installments.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    I pledge to pay
+                                </div>
+                                <div class="col-sm-4">
+                                    <label id="installment-amount">$0.00</label> every
+                                </div>
+                                <div id="divFrequency" class="col-sm-5">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <select id="frequency" class="form-control">
+                                                <option value="">Select Frequency</option>
+                                                <option value="1">Weekly</option>
+                                                <option value="2">Monthly</option>
+                                                <option value="3">Quarterly</option>
+                                                <option value="4">Annually</option>
+                                                <option value="7">Every4Weeks</option>
+                                            </select>
+                                        </div>
+                                        <div id="divDayOfWeek" class="col-sm-6" style="display:none;">
+                                            <select id="day-of-week" class="form-control">
+                                                <option value="">Select Day-of-Week</option>
+                                                <option value="0">Sunday</option>
+                                                <option value="1">Monday</option>
+                                                <option value="2">Tuesday</option>
+                                                <option value="3">Wednesday</option>
+                                                <option value="4">Thursday</option>
+                                                <option value="5">Friday</option>
+                                                <option value="6">Saturday</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    on the
+                                </div>
+                                <div id="divDayOfMonth" class="col-sm-4">
+                                    <select id="day-of-month" class="form-control">
+                                        <option value="">Select Day-Of-Month</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>7</option>
+                                        <option>8</option>
+                                        <option>9</option>
+                                        <option>10</option>
+                                        <option>11</option>
+                                        <option>12</option>
+                                        <option>13</option>
+                                        <option>14</option>
+                                        <option>15</option>
+                                        <option>16</option>
+                                        <option>17</option>
+                                        <option>18</option>
+                                        <option>19</option>
+                                        <option>20</option>
+                                        <option>21</option>
+                                        <option>22</option>
+                                        <option>23</option>
+                                        <option>24</option>
+                                        <option>25</option>
+                                        <option>26</option>
+                                        <option>27</option>
+                                        <option>28</option>
+                                        <option>29</option>
+                                        <option>30</option>
+                                        <option>31</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-1">
+                                    of
+                                </div>
+                                <div id="divMonth" class="col-sm-5">
+                                    <select id="month" class="form-control">
+                                        <option value="">Month</option>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    starting on
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="text" id="start-date" class="form-control" placeholder="mm/dd/yyyy" />
+                                </div>
+                                <div class="col-sm-7">
+                                    . My final payment will be made on <label id="end-date" class="col-form-label" />
+                                </div>
+                            </div>
+
+                            <!-- *********************************************** RECURRING GIFT - SECTION END *********************************************** -->
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Additional Information</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input type="checkbox" id="isAnonymous">
+                        <label for="isAnonymous" class="col-form-label">
+                            Make this gift anonymously
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input type="checkbox" id="createGiftAidDeclaration">
+                        <label for="createGiftAidDeclaration" class="col-form-label checkbox-inline">
+                            Create gift aid declaration
+                        </label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="Comments" class="col-form-label">
+                            Comments:
+                        </label>
+                        <input type="text" class="form-control" placeholder="comments" id="comments" maxlength="400">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="appealId" class="col-form-label">
+                            Appeal ID:
+                        </label>
+                        <input type="text" class="form-control" id="appealId" maxlength="60" placeholder="enter an appeal GUID">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="designation" class="col-form-label">
+                            Designation:
+                        </label>
+                        <select class="form-control" id="designation" name=" "></select>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- *********************************************** CONSENT - SECTION START *********************************************** -->
+
+            <div>
+                <div id="myModal" class="modal-content" style="display:none">
+                    <div class="consentValidation" id="overlay" style="display:none;padding: 7px 0px 8px 7px"></div>
+                    <fieldset style="border:none;">
+                        <legend>
+                            <span id="consentTitle">Consent Start</span><br />
+                            <hr />
+                            <label id="consentStatement" style="text-align:center;"></label><br />
+                        </legend>
+                        <input type="hidden" value="" id="hdnCRMConsentSolicitCode" />
+                        <input type="hidden" value="" id="hdnCRMSolicitCode" />
+                        <table id="consentOption" class="table">
+                            <tr>
+                                <th style="border:1px solid black;border-color:#efefef;">Communication Type</th>
+                                <th style="border:1px solid black;border-color:#efefef;">Opt-in</th>
+                                <th style="border:1px solid black;border-color:#efefef;">Opt-out</th>
+                            </tr>
+                        </table>
+                        <legend>
+                            <a id="privacylink">View Privacy Policy</a><br /><br />
+                            <button style="display:none" class="btn btn-primary" type="button">Submit</button>
+                        </legend>
+                    </fieldset>
+                </div>
+            </div>
+
+            <!-- *********************************************** CONSENT - SECTION END *********************************************** -->
+            <!-- *********************************************** BILLING/DONOR INFORMATION - SECTION START *********************************************** -->
+
+            <fieldset class="billingInformation">
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Finder Number</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="finderNumber" class="col-form-label">
+                            Finder number:
+                        </label>
+                        <input type="text" class="form-control" id="finderNumber" maxlength="60" placeholder="enter a finder number">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Billing Information</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="title" class="col-form-label">
+                            Title:
+                        </label>
+                        <select class="form-control" id="title" name=" ">
+                            <option value="" selected="selected">select a value</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="firstName" class="col-form-label">
+                            First name:
+                        </label>
+                        <input type="text" class="form-control" id="firstName" maxlength="30" placeholder="enter your first name">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="middleName" class="col-form-label">
+                            Middle name:
+                        </label>
+                        <input type="text" class="form-control" id="middleName" maxlength="30" placeholder="enter your middle name">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 required">
+                        <label for="lastName" class="required col-form-label">
+                            Last name:
+                        </label>
+                        <input type="text" class="form-control" id="lastName" maxlength="60" placeholder="enter your last name">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 required">
+                        <label for="country" class="col-form-label required">
+                            Country:
+                        </label>
+                        <select class="form-control" id="country"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 required">
+                        <label for="streetAddress" class="col-form-label required" id="streetAddressLabel">
+                            Address:
+                        </label>
+                        <textarea class="form-control" id="streetAddress" cols="20" rows="1"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 required">
+                        <label for="city" class="col-form-label required" id="cityLabel">
+                            City:
+                        </label>
+                        <input type="text" class="form-control" id="city" maxlength="50" placeholder="enter a city">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 required">
+                        <label for="state" class="col-form-label required" id="stateLabel">
+                            State/Province:
+                        </label>
+                        <select class="form-control" id="state"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 required">
+                        <label for="postalCode" class="col-form-label required" id="postalCodeLabel">
+                            ZIP/Postal code:
+                        </label>
+                        <input type="text" class="form-control" id="postalCode" maxlength="10" placeholder="enter a zip code">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 required">
+                        <label for="emailAddress" class="col-form-label required">
+                            Email:
+                        </label>
+                        <input type="email" class="form-control" id="emailAddress" maxlength="120" placeholder="enter an email">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="phone" class="col-form-label">
+                            Phone:
+                        </label>
+                        <input type="text" class="form-control" id="phone" placeholder="enter a phone">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Payment Information</span></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="formrow required">
+                            <ul class="list-group">
+                                <li>
+                                    <input id="paymentCreditCard" type="radio" name="paymentMethod" value="0" checked="checked" />
+                                    <label for="paymentCreditCard">
+                                        Credit Card
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Matching Gifts</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input type="checkbox" id="isCorporate">
+                        <label for="isCorporate" class="col-form-label">
+                            This donation if on behalf of a company
+                        </label>
+                    </div>
+                </div>
+                <div class="row required invisible" id="organizationNameDiv">
+                    <div class="col-sm-4">
+                        <label for="organizationName" class="col-form-label">
+                            Company name:
+                        </label>
+                        <input type="text" id="organizationName" maxLength="60" placeholder="enter your company name" class="form-control">
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- *********************************************** BILLING/DONOR INFORMATION - SECTION END *********************************************** -->
+            <!-- *********************************************** TRIBUTE - SECTION START *********************************************** -->
+
+            <fieldset class="tribueInformation">
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Tribute /Acknowledgee Information</span></div>
+                </div>
+                <div>
+                    <div class="row">
+                        <div row="col-sm-12">
+                            &nbsp;&nbsp;
+                            <input type="checkbox" id="includeTribue">
+                            <label for="includeTribue" class="col-form-label">
+                                Include tribute:
+                            </label>
+                        </div>
+                    </div>
+                    <div class="invisible" id="tribute">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="required">What kind of tribute:</label>
+                                <ul class="pagination">
+                                    <li>
+                                        <input id="kindSpecific" type="radio" name="radioTribute" value="1" checked="checked" />
+                                        <label for="kindSpecific">
+                                            <span class="term">Specific</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <input id="kindGeneral" type="radio" name="radioTribute" value="2" />
+                                        <label for="kindGeneral">
+                                            <span class="term">General</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="specificTribute" class="col-sm-6">
+                                <div class="formrow">
+                                    <label for="tributeID" class="col-form-label">
+                                        Tribute ID:
+                                    </label>
+                                    <input type="text" class="form-control" id="tributeID" maxlength="60" placeholder="enter a tribute GUID">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="invisible" id="generalTribute">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="tributeFirstName" class="col-form-label">
+                                        First name:
+                                    </label>
+                                    <input type="text" class="form-control" id="tributeFirstName" placeholder="enter a first name">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="tributeLastName" class="col-form-label">
+                                        Last name:
+                                    </label>
+                                    <input type="text" class="form-control" id="tributeLastName" placeholder="enter a last name">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="tributeType" class="col-form-label">
+                                        Type:
+                                    </label>
+                                    <input type="text" class="form-control" id="tributeType" placeholder="enter a tribute type">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="tributeDescription" class="col-form-label">
+                                        Description:
+                                    </label>
+                                    <input type="text" class="form-control" id="tributeDescription" placeholder="enter a description">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="checkbox" id="includeAcknowledgee">
+                                <label for="includeAcknowledgee" class="col-form-label">
+                                    Include acknowledgee:
+                                </label>
+                            </div>
+                        </div>
+                        <div class="invisible" id="acknowledgee">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="acknowledgeeFirstName" class="col-form-label">
+                                        First name:
+                                    </label>
+                                    <input type="text" class="form-control" id="acknowledgeeFirstName" placeholder="enter a first name">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="acknowledgeeLastName" class="col-form-label">
+                                        Last name:
+                                    </label>
+                                    <input type="text" class="form-control" id="acknowledgeeLastName" placeholder="enter a last name">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="acknowledgeeCountry" class="col-form-label">
+                                        Country:
+                                    </label>
+                                    <select class="adfSelect form-control required" id="acknowledgeeCountry">
+                                        <option value="ec78fd4f-0c4b-4957-aa3f-2eea818ac1a5">Argentina</option>
+                                        <option value="7956b929-d5c4-464c-a4a1-3890e62a7169">Australia</option>
+                                        <option value="fee54b28-1e87-471a-8911-3a2d2bd3a495">Canada</option>
+                                        <option value="7abaec6b-9dae-48b6-aefd-ed49a8a17014">Cyprus</option>
+                                        <option value="3b14baef-0885-40b8-b2d3-61952b4ee65f">Germany</option>
+                                        <option value="9010ab76-fa31-49da-af40-11b55a1a2325">Italy</option>
+                                        <option value="f56237ae-2818-4709-abe3-9033f0f5f2bc">Micronesia</option>
+                                        <option value="8b2bfd13-5ba7-4285-b8f5-cb7b66bad0da">Netherlands</option>
+                                        <option value="b7136318-8d3f-4433-b8a0-5f5243b8e0ca">New Zealand</option>
+                                        <option value="e6c46278-273b-4cde-80ac-b760bff10d39">Philippines</option>
+                                        <option value="b6ac77f4-921b-4f06-94a1-71681be655d3">Switzerland</option>
+                                        <option value="4a1fefc1-c1d1-4a07-a574-a45f522c9ea7">United Kingdom</option>
+                                        <option value="00cb6cdb-f6cf-44e2-9c73-51ddf7965d8f">United States</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="acknowledgeeAddressLines" id="streetAddressLabelAcknowledgee" class="col-form-label">
+                                        Address lines:
+                                    </label>
+                                    <input type="text" class="form-control" id="acknowledgeeAddressLines" placeholder="enter address lines">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <label for="acknowledgeeCity" class="col-form-label">
+                                        City:
+                                    </label>
+                                    <input type="text" class="form-control" placeholder="enter city">
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="acknowledgeeState" class="col-form-label">
+                                        State:
+                                    </label>
+                                    <select class="adfSelect form-control required" placeholder="State" id="acknowledgeeState">
+                                        <option value="b7fdbb29-e38f-4e31-91ca-f18b0a75d6b2">Alabama</option>
+                                        <option value="5ef7a238-bedc-40d3-b75c-989eb359843e">Alaska</option>
+                                        <option value="fdc812c4-0469-4b18-a8b2-69cf758d5b72">American Samoa</option>
+                                        <option value="7bda2468-7402-4fe8-a79e-976905e0d1d6">Arizona</option>
+                                        <option value="00347042-1e92-40f4-8c7c-43967a0288b4">Arkansas</option>
+                                        <option value="9538fd5a-a2b7-41c7-bd36-cd76398f8bdb">Armed Forces Americas</option>
+                                        <option value="26ff2ab5-265f-4d15-87df-3eb3c47fe016">Armed Forces Europe/Canada/Middle East/Africa</option>
+                                        <option value="52a39054-3772-4d63-b11b-7b0e1867b2bd">Armed Forces Pacific</option>
+                                        <option value="c4898e64-c833-40d0-a56d-2910304c1389">BC</option>
+                                        <option value="622c184d-c9f9-4128-ba77-93c294fbae04">California</option>
+                                        <option value="8ee83ecc-8782-4bc6-a1f6-44962c469284">Canal Zone</option>
+                                        <option value="e4456832-9543-48ca-aa8b-44490e558ac4">Colorado</option>
+                                        <option value="d2bd2357-3300-4859-9df6-f3c68af7439e">Connecticut</option>
+                                        <option value="7af4bbb5-0a3b-45ac-8f15-429c1463bce2">Delaware</option>
+                                        <option value="09513ecd-d82b-4f86-812b-06e1b1dc07f9">District of Columbia</option>
+                                        <option value="761ce051-3215-4d17-ba5f-db6be05064a3">Federated States of Micronesia</option>
+                                        <option value="ea60d50f-2b7c-4863-967a-a9941b23f523">Florida</option>
+                                        <option value="44d1976c-fcf5-49da-a087-81b3758a96b8">Georgia</option>
+                                        <option value="39b0a266-edea-4bab-b3b4-35011348a827">Guam</option>
+                                        <option value="a84bdc99-4ce6-4982-9f62-b9909e3129dd">Hawaii</option>
+                                        <option value="5183c79e-f864-409a-9c5e-f3df27e07f64">Idaho</option>
+                                        <option value="26d92ff6-7eb9-4408-a992-87215d01edb5">Illinois</option>
+                                        <option value="a795cfc1-6de2-4a12-9c81-132341cf1be8">Indiana</option>
+                                        <option value="6938e175-b0c8-4c1f-8eda-8530e9140396">Iowa</option>
+                                        <option value="253b6dd5-79df-4643-b0a9-b4d90892a222">Kansas</option>
+                                        <option value="12edd14f-9243-4494-aa00-8e7d17a0b325">Kentucky</option>
+                                        <option value="0ea93967-4c8c-4ad7-8474-e26ee6910b43">Louisiana</option>
+                                        <option value="c55d6232-d823-446e-9da4-6d2650d99331">Maine</option>
+                                        <option value="23fd2d13-5760-4f18-b91b-3a542095a732">Marshall Islands</option>
+                                        <option value="e1ca3663-9e34-4819-b2dc-22d7a1e601fe">Maryland</option>
+                                        <option value="fc58e48c-ea64-45b7-9f6b-ac2e73b16323">Massachusetts</option>
+                                        <option value="798463d6-5e40-48d8-8b30-1786513676ce">Michigan</option>
+                                        <option value="4daad583-a1b9-420c-8861-2641a2c04e0f">Minnesota</option>
+                                        <option value="828412a7-4549-4c89-b9dc-9ddd25c72a4d">Mississippi</option>
+                                        <option value="c3b88d6e-f2a9-444d-9b42-31d5c0e31538">Missouri</option>
+                                        <option value="dedf7663-9081-489c-af27-d3c19fef8c53">Montana</option>
+                                        <option value="04ccbc39-7807-4bc0-b942-2d88cd43e8f6">Nebraska</option>
+                                        <option value="ce7ac87e-c243-4f84-bd56-e822e2d38b73">Nevada</option>
+                                        <option value="b50ac14b-0191-4634-bd18-3194292a9d62">New Hampshire</option>
+                                        <option value="9b952f48-8408-49f0-bbff-6ecbe2cd3d0b">New Jersey</option>
+                                        <option value="6210d152-26df-4332-aad0-559117f6bdf9">New Mexico</option>
+                                        <option value="76eb36e6-5ae4-4aa5-84ed-966d7f42fa40">New York</option>
+                                        <option value="75bbdb2b-b060-408e-b97e-e25f62e523c2">North Carolina</option>
+                                        <option value="83450032-6ddf-4ce3-a21a-3181eede8799">North Dakota</option>
+                                        <option value="c59c81a3-3e2b-4708-940c-00e198c1ea93">Northern Mariana Islands</option>
+                                        <option value="b43db303-5388-45d7-adae-c7272d9c563c">Ohio</option>
+                                        <option value="f576a438-ebe9-4045-9ee7-0e81e9a87909">Oklahoma</option>
+                                        <option value="c48d061f-20a7-4a63-8557-31b660aa67d4">Oregon</option>
+                                        <option value="c3628e38-834a-45fe-8784-c6da8c9a3ceb">Palau</option>
+                                        <option value="72f7ac61-db2f-4888-bde7-16312bc7cf58">Pennsylvania</option>
+                                        <option value="95076f20-748b-4265-a875-cf1d3a22c1d3">Puerto Rico</option>
+                                        <option value="9988e83d-9af8-4e7b-b8df-569f58de6ec9">Rhode Island</option>
+                                        <option value="16f1b713-c4ba-450d-abdd-fb73854566ff">South Carolina</option>
+                                        <option value="1765411d-e578-4492-bc06-7cbc38ae738d">South Dakota</option>
+                                        <option value="03501976-ea73-472e-b685-a5df251fdea3">Tennessee</option>
+                                        <option value="d88653af-0b6c-4104-b75e-5987536a38fc">Texas</option>
+                                        <option value="fbb15fae-1c6b-445b-a435-9b6ce8c50105">Utah</option>
+                                        <option value="17b17177-af25-4179-9493-2a2db15f0ae6">Vermont</option>
+                                        <option value="20b0a289-1807-45c2-89b5-614d14b8f5aa">Virgin Islands</option>
+                                        <option value="cfbc8dce-2cc5-4681-aaf8-8a8c1e5d8d43">Virginia</option>
+                                        <option value="c56c4d01-363c-4f6b-bb01-17e19aee6504">Washington</option>
+                                        <option value="67de067a-bed9-4768-b4cc-b24d23b5b94e">West Virginia</option>
+                                        <option value="dd00a540-1194-4b53-bf88-ada4a6e2a69d">Wisconsin</option>
+                                        <option value="65f8f915-56fb-45d9-a85c-37d41e50b7a2">Wyoming</option>
+                                    </select>
+                                </div>                            
+                                <div class="col-sm-2">
+                                    <label for="acknowledgeePostalCode" class="col-form-label">
+                                        Postal code:
+                                    </label>
+                                    <input type="text" class="form-control" id="acknowledgeePostalCode" placeholder="enter postal code">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="acknowledgeeEmail" class="col-form-label">
+                                        Email:
+                                    </label>
+                                    <input type="text" class="form-control" id="acknowledgeeEmail" placeholder="enter email">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="acknowledgeePhone" class="col-form-label">
+                                        Phone:
+                                    </label>
+                                    <input type="text" class="form-control" id="acknowledgeePhone" placeholder="enter phone">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- *********************************************** TRIBUTE - SECTION END *********************************************** -->
+            <!-- *********************************************** ATTRIBUTE INFORMATION - SECTION START *********************************************** -->
+
+            <fieldset class="attributeInformation">
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Attributes</span></div>
+                </div>
+                <div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input type="checkbox" id="includeAttribute1">
+                            <label for="includeAttribute1" class="col-form-label">
+                                Include attribute 1:
+                            </label>
+                        </div>
+                    </div>
+                    <div class="invisible" id="attribute1">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="attribute1ID" class="col-form-label">
+                                    Attribute ID:
+                                </label>
+                                <input type="text" class="form-control" id="attribute1ID" placeholder="enter attribute GUID">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="attribute1Value" class="col-form-label">
+                                    Value:
+                                </label>
+                                <input type="text" class="form-control" id="attribute1Value" placeholder="enter value">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input type="checkbox" id="includeAttribute2">
+                            <label for="includeAttribute2" class="col-form-label">
+                                Include attribute 2:
+                            </label>
+                        </div>
+                    </div>
+                    <div class="invisible" id="attribute2">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="attribute2ID" class="col-form-label">
+                                    Attribute ID:
+                                </label>
+                                <input type="text" class="form-control" id="attribute2ID" placeholder="enter attribute GUID">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="attribute2Value" class="col-form-label">
+                                    Value:
+                                </label>
+                                <input type="text" class="form-control" id="attribute2Value" placeholder="enter value">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- *********************************************** ATTRIBUTE INFORMATION - SECTION END *********************************************** -->
+            <br />
+            <!-- This is the final 'Donate' button, when Donor fill the all required field of page after that press this button for Submit Donation. -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <input id="donate" class="submit btn btn-success form-control" type="button" value="Donate" />
+                </div>
+                <div class="col-sm-6">
+                    <input class="btn btn-danger form-control" type="reset" value="Reset" />
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Its a compulsory div, it display the Confirmation screen with Donor details after successful donation. -->
+        <div class="confirmation container"></div>
+    </div>
+</body>
+</html>
