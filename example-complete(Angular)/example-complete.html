@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="bbADF">
+<head>
+  
+  <title>ADF - Complete Example</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="example-complete.css">
+    
+</head>
+<body>
+  
+  <form class="form-horizontal" ng-controller="DonationController">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <h1>Advanced Donation Form <small>Complete Example</small></h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          
+          <h3>Donor Information</h3>
+          
+          <div class="form-group">
+            <div class="col-sm-6">
+              <input type="text" class="form-control" ng-model="Donor.Firstname" placeholder="Firstname" required>
+            </div>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" ng-model="Donor.Lastname" placeholder="Lastname" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-12">
+              <textarea class="form-control" placeholder="Address" ng-model="Donor.Address.StreetAddress"></textarea>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="col-sm-6">
+              <select class="form-control" ng-model="Donor.Address.Country" ng-change="getStates()" ng-options="c.Description for c in countries track by c.Id" ng-change="getStates()" required>
+                <option value="">Country</option>
+              </select>
+            </div>
+            <div class="col-sm-6">
+              <select class="form-control" ng-model="Donor.Address.State" ng-options="s.Description for s in states track by s.Id" required>
+                <option value="">State</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-9">
+              <input type="text" class="form-control" placeholder="City" ng-model="Donor.Address.City">
+            </div>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" placeholder="Zip" ng-model="Donor.Address.PostalCode" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Email" ng-model="Donor.EmailAddress" />
+            </div>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="Phone" ng-model="Donor.Phone" />
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="col-sm-4">
+              <label class="btn btn-default" ng-model="Gift.IsCorporate" btn-checkbox>
+                <i class="fa fa-fw" ng-class="{ 'fa-square-o': !Gift.IsCorporate, 'fa-check-square-o': Gift.IsCorporate }"></i> Corporate?
+              </label>
+            </div>
+            <div class="col-sm-8" ng-show="Gift.IsCorporate">
+              <input type="text" class="form-control" ng-model="Donor.OrganizationName" placeholder="Organization Name" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="col-sm-4">
+              <label class="btn btn-default" ng-model="Gift.isAnonymous" btn-checkbox>
+                <i class="fa fa-fw" ng-class="{ 'fa-square-o': !Gift.isAnonymous, 'fa-check-square-o': Gift.isAnonymous }"></i> Anonymous?
+              </label>
+            </div>
+          </div>
+          
+        </div>
+        <div class="col-sm-6">
+        
+          <h3>Gift Information</h3>
+          
+          <div class="form-group">
+            <div class="col-sm-6">
+              <div class="btn-group">
+                <label class="btn btn-default" ng-repeat="option in amounts" ng-model="defaults.amount" btn-radio="option.amount" required>
+                  <span ng-bind="option.label"></span>
+                </label>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="btn-group">
+                <label class="btn btn-default" ng-repeat="option in payments" ng-model="defaults.payments" btn-radio="option.id" required>
+                  <span ng-bind="option.label"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group" ng-show="defaults.amount == 'other'">
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-addon">$</div>
+                <input type="text" class="form-control" ng-model="Gift.Amount" placeholder="Other Amount" ng-required="Gift.SelectedAmount == 'other'">
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="col-sm-12">
+              <textarea class="form-control" ng-model="Gift.Comments" placeholder="Comments"></textarea>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="col-sm-6">
+              <select class="form-control" ng-model="defaults.designation" ng-options="designation.label for designation in designations track by designation.id" required>
+                <option value="">Designation</option>
+              </select>
+            </div>
+            <div class="col-sm-6">
+              <div class="btn-group">
+                <label class="btn btn-default" ng-repeat="option in types" ng-model="defaults.type" btn-radio="option.id">
+                  <span ng-bind="option.label"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <div ng-show="defaults.type == 'recurring'">
+
+            <div class="form-group">
+              <div class="col-sm-6">
+                <div class="input-group">
+                  <input type="text" class="form-control" ng-model="Gift.Recurrence.StartDate" datepicker-popup="MMMM dd, yyyy" is-open="openedStartDate" show-button-bar="false" min-date="minDate" placeholder="Start Date" required />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open($event, 'openedStartDate')">
+                      <i class="fa fa-calendar"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="input-group">
+                  <input type="text" class="form-control" ng-model="Gift.Recurrence.EndDate" datepicker-popup="MMMM dd, yyyy" is-open="openedEndDate" show-button-bar="false" min-date="minDate" placeholder="End Date" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open($event, 'openedEndDate')">
+                      <i class="fa fa-calendar"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <div class="col-sm-4">
+                <select class="form-control" ng-model="Gift.Recurrence.Frequency" required>
+                  <option value="">Frequency</option>
+                  <option value="1">Weekly</option>
+                  <option value="2">Monthly</option>
+                  <option value="3">Quarterly</option>
+                  <option value="4">Annually</option>
+                </select>
+              </div>
+              <div ng-show="Gift.Recurrence.Frequency">
+                <div class="col-sm-4" ng-show="Gift.Recurrence.Frequency == 1">
+                  <select class="form-control" ng-model="Gift.Recurrence.Month" required>
+                    <option value="">Month</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                  </select>
+                </div>
+                <div class="col-sm-4" ng-show="Gift.Recurrence.Frequency == 1">
+                  <select class="form-control" ng-model="Gift.Recurrence.DayOfWeek" required>
+                    <option value="">Day of Week</option>
+                    <option value="0">Sunday</option>
+                    <option value="1">Monday</option>
+                    <option value="2">Tuesday</option>
+                    <option value="3">Wednesday</option>
+                    <option value="4">Thursday</option>
+                    <option value="5">Friday</option>
+                    <option value="6">Saturday</option>
+                  </select>
+                </div>
+                <div class="col-sm-4" ng-show="Gift.Recurrence.Frequency != 1">
+                  <select class="form-control" ng-model="Gift.Reccurence.DayOfMonth" required>
+                    <option value="">Day of Month</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+
+          <div class="form-group">
+            <div class="col-sm-12">
+              
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <p>
+            <button class="btn btn-lg btn-primary btn-donate" ng-click="log()">
+              <i class="fa fa-lock"></i> Donate
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+  
+  </form>
+  
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.2/ui-bootstrap-tpls.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>  
+  <script src="//[ENTER-YOUR-BBIS-URL-HERE]/Client/Scripts/easyXDM/easyXDM.min.js"></script>
+  <script src="//[ENTER-YOUR-BBIS-URL-HERE]/Client/Scripts/API/BBAPI-min.js"></script>
+  <script src="example-complete.js"></script>
+  
+</body>
+</html>

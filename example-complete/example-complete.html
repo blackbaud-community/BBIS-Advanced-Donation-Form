@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="bbADF">
+<html lang="en">
 <head>
   
   <title>ADF - Complete Example</title>
@@ -7,282 +7,820 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="example-complete.css">
     
+  <script type="text/javascript">
+
+        /*------------------------------------------- PART CONFIGURATION - SECTION START -------------------------------------------*/
+
+        var designationQueryId = "8d9fccdf-dea8-4590-8ec2-355a4c59df04";  /* Ad-hoc Query of Designation Type With Enable query for CMS REST API */
+
+        var consentPartId = parseInt($('.BBDonationApiContainer').attr('partid'), 10);
+
+        var cnstType = ($('.BBDonationApiContainer').attr('cnsttype') == "True");
+
+        /*------------------------------------------- PART CONFIGURATION - SECTION END -------------------------------------------*/
+
+  </script>
+	
 </head>
 <body>
-  
-  <form class="form-horizontal" ng-controller="DonationController">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
-          <h1>Advanced Donation Form <small>Complete Example</small></h1>
+  <div class="donationForm container">
+        <div class="alert" style="background-color:#b6cbe5;">
+            <h3>Advanced Donation Form <small>Complete Example</small></h3>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6">
-          
-          <h3>Donor Information</h3>
-          
-          <div class="form-group">
-            <div class="col-sm-6">
-              <input type="text" class="form-control" ng-model="Donor.Firstname" placeholder="Firstname" required>
-            </div>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" ng-model="Donor.Lastname" placeholder="Lastname" required>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-sm-12">
-              <textarea class="form-control" placeholder="Address" ng-model="Donor.Address.StreetAddress"></textarea>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <div class="col-sm-6">
-              <select class="form-control" ng-model="Donor.Address.Country" ng-change="getStates()" ng-options="c.Description for c in countries track by c.Id" ng-change="getStates()" required>
-                <option value="">Country</option>
-              </select>
-            </div>
-            <div class="col-sm-6">
-              <select class="form-control" ng-model="Donor.Address.State" ng-options="s.Description for s in states track by s.Id" required>
-                <option value="">State</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-sm-9">
-              <input type="text" class="form-control" placeholder="City" ng-model="Donor.Address.City">
-            </div>
-            <div class="col-sm-3">
-              <input type="text" class="form-control" placeholder="Zip" ng-model="Donor.Address.PostalCode" />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Email" ng-model="Donor.EmailAddress" />
-            </div>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" placeholder="Phone" ng-model="Donor.Phone" />
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <div class="col-sm-4">
-              <label class="btn btn-default" ng-model="Gift.IsCorporate" btn-checkbox>
-                <i class="fa fa-fw" ng-class="{ 'fa-square-o': !Gift.IsCorporate, 'fa-check-square-o': Gift.IsCorporate }"></i> Corporate?
-              </label>
-            </div>
-            <div class="col-sm-8" ng-show="Gift.IsCorporate">
-              <input type="text" class="form-control" ng-model="Donor.OrganizationName" placeholder="Organization Name" required>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <div class="col-sm-4">
-              <label class="btn btn-default" ng-model="Gift.isAnonymous" btn-checkbox>
-                <i class="fa fa-fw" ng-class="{ 'fa-square-o': !Gift.isAnonymous, 'fa-check-square-o': Gift.isAnonymous }"></i> Anonymous?
-              </label>
-            </div>
-          </div>
-          
-        </div>
-        <div class="col-sm-6">
-        
-          <h3>Gift Information</h3>
-          
-          <div class="form-group">
-            <div class="col-sm-6">
-              <div class="btn-group">
-                <label class="btn btn-default" ng-repeat="option in amounts" ng-model="defaults.amount" btn-radio="option.amount" required>
-                  <span ng-bind="option.label"></span>
-                </label>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="btn-group">
-                <label class="btn btn-default" ng-repeat="option in payments" ng-model="defaults.payments" btn-radio="option.id" required>
-                  <span ng-bind="option.label"></span>
-                </label>
-              </div>
-            </div>
-          </div>
-          
-          <div class="form-group" ng-show="defaults.amount == 'other'">
-            <div class="col-sm-12">
-              <div class="input-group">
-                <div class="input-group-addon">$</div>
-                <input type="text" class="form-control" ng-model="Gift.Amount" placeholder="Other Amount" ng-required="Gift.SelectedAmount == 'other'">
-              </div>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <div class="col-sm-12">
-              <textarea class="form-control" ng-model="Gift.Comments" placeholder="Comments"></textarea>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <div class="col-sm-6">
-              <select class="form-control" ng-model="defaults.designation" ng-options="designation.label for designation in designations track by designation.id" required>
-                <option value="">Designation</option>
-              </select>
-            </div>
-            <div class="col-sm-6">
-              <div class="btn-group">
-                <label class="btn btn-default" ng-repeat="option in types" ng-model="defaults.type" btn-radio="option.id">
-                  <span ng-bind="option.label"></span>
-                </label>
-              </div>
-            </div>
-          </div>
-          
-          <div ng-show="defaults.type == 'recurring'">
-
-            <div class="form-group">
-              <div class="col-sm-6">
-                <div class="input-group">
-                  <input type="text" class="form-control" ng-model="Gift.Recurrence.StartDate" datepicker-popup="MMMM dd, yyyy" is-open="openedStartDate" show-button-bar="false" min-date="minDate" placeholder="Start Date" required />
-                  <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="open($event, 'openedStartDate')">
-                      <i class="fa fa-calendar"></i>
-                    </button>
-                  </span>
+        <div class="validation"></div>
+        <div class="consentValidation" id="inline" style="display:none"></div>
+        <div class="form">
+            <fieldset class="donationInformation">
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Gift Information</span></div>
                 </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="input-group">
-                  <input type="text" class="form-control" ng-model="Gift.Recurrence.EndDate" datepicker-popup="MMMM dd, yyyy" is-open="openedEndDate" show-button-bar="false" min-date="minDate" placeholder="End Date" />
-                  <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="open($event, 'openedEndDate')">
-                      <i class="fa fa-calendar"></i>
-                    </button>
-                  </span>
+                <div class="row">
+                    <!-- *********************************************** GIFT AMOUNT - SECTION START *********************************************** -->
+                    <div class="col-sm-5">
+                        <div class="giftAmount">
+                            <label class="required">Select Gift Amount:</label>
+                            <ul class="list-group">
+                                <li>
+                                    <input id="amt1000" type="radio" name="radioAmount" value="1000" />
+                                    <label for="amt1000">
+                                        <span class="term">Platinum</span>
+                                        <span class="value">$1,000</span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <input id="amt500" type="radio" name="radioAmount" value="500" />
+                                    <label for="amt500">
+                                        <span class="term">Gold</span>
+                                        <span class="value">$500</span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <input id="amt100" type="radio" name="radioAmount" value="100" />
+                                    <label for="amt100">
+                                        <span class="term">Silver</span>
+                                        <span class="value">$100</span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <input id="amt25" type="radio" name="radioAmount" value="25" />
+                                    <label for="amt25">
+                                        <span class="term">Bronze</span>
+                                        <span class="value">$25</span>
+                                    </label>
+                                </li>
+                                <li class="other">
+                                    <input id="amtOther" type="radio" name="radioAmount" value="-1" checked="checked" />
+                                    <label for="amtOther">
+                                        <span class="term">Enter an amount</span>
+                                    </label>
+                                    <input id="txtAmount" type="text" placeholder="$">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- *********************************************** GIFT AMOUNT - SECTION END *********************************************** -->
+                    <div class="col-sm-7">
+                        <div class="recurrence">
+                            <label class="required">Recurrence:</label>
+                            <ul class="list-group">
+                                <li>
+                                    <input id="recOneTime" type="radio" name="radioRecurrence" value="0" checked="checked" />
+                                    <label for="recOneTime">
+                                        Make a one time gift.
+                                    </label>
+                                </li>
+                                <li>
+                                    <input id="recMonthly" type="radio" name="radioRecurrence" value="1" />
+                                    <label for="recMonthly">
+                                        Recurring Gift.
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- *********************************************** RECURRING GIFT - SECTION START *********************************************** -->
+
+                        <div id="divRecurringGift" style="display:none;">
+                            <h5>What's good?</h5>
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    I want to pledge above amount to the Avengers Initiative in
+                                </div>
+                                <div class="col-sm-2">
+                                    <input id="number-of-installments" type="text" class="form-control" />
+                                </div>
+                                <div class="col-sm-1">
+                                    installments.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    I pledge to pay
+                                </div>
+                                <div class="col-sm-4">
+                                    <label id="installment-amount">$0.00</label> every
+                                </div>
+                                <div id="divFrequency" class="col-sm-5">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <select id="frequency" class="form-control">
+                                                <option value="">Select Frequency</option>
+                                                <option value="1">Weekly</option>
+                                                <option value="2">Monthly</option>
+                                                <option value="3">Quarterly</option>
+                                                <option value="4">Annually</option>
+                                                <option value="7">Every4Weeks</option>
+                                            </select>
+                                        </div>
+                                        <div id="divDayOfWeek" class="col-sm-6" style="display:none;">
+                                            <select id="day-of-week" class="form-control">
+                                                <option value="">Select Day-of-Week</option>
+                                                <option value="0">Sunday</option>
+                                                <option value="1">Monday</option>
+                                                <option value="2">Tuesday</option>
+                                                <option value="3">Wednesday</option>
+                                                <option value="4">Thursday</option>
+                                                <option value="5">Friday</option>
+                                                <option value="6">Saturday</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    on the
+                                </div>
+                                <div id="divDayOfMonth" class="col-sm-4">
+                                    <select id="day-of-month" class="form-control">
+                                        <option value="">Select Day-Of-Month</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>7</option>
+                                        <option>8</option>
+                                        <option>9</option>
+                                        <option>10</option>
+                                        <option>11</option>
+                                        <option>12</option>
+                                        <option>13</option>
+                                        <option>14</option>
+                                        <option>15</option>
+                                        <option>16</option>
+                                        <option>17</option>
+                                        <option>18</option>
+                                        <option>19</option>
+                                        <option>20</option>
+                                        <option>21</option>
+                                        <option>22</option>
+                                        <option>23</option>
+                                        <option>24</option>
+                                        <option>25</option>
+                                        <option>26</option>
+                                        <option>27</option>
+                                        <option>28</option>
+                                        <option>29</option>
+                                        <option>30</option>
+                                        <option>31</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-1">
+                                    of
+                                </div>
+                                <div id="divMonth" class="col-sm-5">
+                                    <select id="month" class="form-control">
+                                        <option value="">Month</option>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    starting on
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="text" id="start-date" class="form-control" placeholder="mm/dd/yyyy" />
+                                </div>
+                                <div class="col-sm-7">
+                                    . My final payment will be made on <label id="end-date" class="col-form-label" />
+                                </div>
+                            </div>
+
+                            <!-- *********************************************** RECURRING GIFT - SECTION END *********************************************** -->
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            
-            <div class="form-group">
-              <div class="col-sm-4">
-                <select class="form-control" ng-model="Gift.Recurrence.Frequency" required>
-                  <option value="">Frequency</option>
-                  <option value="1">Weekly</option>
-                  <option value="2">Monthly</option>
-                  <option value="3">Quarterly</option>
-                  <option value="4">Annually</option>
-                </select>
-              </div>
-              <div ng-show="Gift.Recurrence.Frequency">
-                <div class="col-sm-4" ng-show="Gift.Recurrence.Frequency == 1">
-                  <select class="form-control" ng-model="Gift.Recurrence.Month" required>
-                    <option value="">Month</option>
-                    <option value="1">January</option>
-                    <option value="2">February</option>
-                    <option value="3">March</option>
-                    <option value="4">April</option>
-                    <option value="5">May</option>
-                    <option value="6">June</option>
-                    <option value="7">July</option>
-                    <option value="8">August</option>
-                    <option value="9">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
-                  </select>
+            </fieldset>
+
+            <fieldset>
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Additional Information</span></div>
                 </div>
-                <div class="col-sm-4" ng-show="Gift.Recurrence.Frequency == 1">
-                  <select class="form-control" ng-model="Gift.Recurrence.DayOfWeek" required>
-                    <option value="">Day of Week</option>
-                    <option value="0">Sunday</option>
-                    <option value="1">Monday</option>
-                    <option value="2">Tuesday</option>
-                    <option value="3">Wednesday</option>
-                    <option value="4">Thursday</option>
-                    <option value="5">Friday</option>
-                    <option value="6">Saturday</option>
-                  </select>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input type="checkbox" id="isAnonymous">
+                        <label for="isAnonymous" class="col-form-label">
+                            Make this gift anonymously
+                        </label>
+                    </div>
                 </div>
-                <div class="col-sm-4" ng-show="Gift.Recurrence.Frequency != 1">
-                  <select class="form-control" ng-model="Gift.Reccurence.DayOfMonth" required>
-                    <option value="">Day of Month</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                    <option value="21">21</option>
-                    <option value="22">22</option>
-                    <option value="23">23</option>
-                    <option value="24">24</option>
-                    <option value="25">25</option>
-                    <option value="26">26</option>
-                    <option value="27">27</option>
-                    <option value="28">28</option>
-                    <option value="29">29</option>
-                    <option value="30">30</option>
-                    <option value="31">31</option>
-                  </select>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input type="checkbox" id="createGiftAidDeclaration">
+                        <label for="createGiftAidDeclaration" class="col-form-label checkbox-inline">
+                            Create gift aid declaration
+                        </label>
+                    </div>
                 </div>
-              </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="Comments" class="col-form-label">
+                            Comments:
+                        </label>
+                        <input type="text" class="form-control" placeholder="comments" id="comments" maxlength="400">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="appealId" class="col-form-label">
+                            Appeal ID:
+                        </label>
+                        <input type="text" class="form-control" id="appealId" maxlength="60" placeholder="enter an appeal GUID">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="designation" class="col-form-label">
+                            Designation:
+                        </label>
+                        <select class="form-control" id="designation" name=" "></select>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- *********************************************** CONSENT - SECTION START *********************************************** -->
+
+            <div>
+                <div id="myModal" class="modal-content" style="display:none">
+                    <div class="consentValidation" id="overlay" style="display:none;padding: 7px 0px 8px 7px"></div>
+                    <fieldset style="border:none;">
+                        <legend>
+                            <span id="consentTitle">Consent Start</span><br />
+                            <hr />
+                            <label id="consentStatement" style="text-align:center;"></label><br />
+                        </legend>
+                        <input type="hidden" value="" id="hdnCRMConsentSolicitCode" />
+                        <input type="hidden" value="" id="hdnCRMSolicitCode" />
+                        <table id="consentOption" class="table">
+                            <tr>
+                                <th style="border:1px solid black;border-color:#efefef;">Communication Type</th>
+                                <th style="border:1px solid black;border-color:#efefef;">Opt-in</th>
+                                <th style="border:1px solid black;border-color:#efefef;">Opt-out</th>
+                            </tr>
+                        </table>
+                        <legend>
+                            <a id="privacylink">View Privacy Policy</a><br /><br />
+                            <button style="display:none" class="btn btn-primary" type="button">Submit</button>
+                        </legend>
+                    </fieldset>
+                </div>
             </div>
 
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6">
+            <!-- *********************************************** CONSENT - SECTION END *********************************************** -->
+            <!-- *********************************************** BILLING/DONOR INFORMATION - SECTION START *********************************************** -->
 
-          <div class="form-group">
-            <div class="col-sm-12">
-              
+            <fieldset class="billingInformation">
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Finder Number</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="finderNumber" class="col-form-label">
+                            Finder number:
+                        </label>
+                        <input type="text" class="form-control" id="finderNumber" maxlength="60" placeholder="enter a finder number">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Billing Information</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="title" class="col-form-label">
+                            Title:
+                        </label>
+                        <select class="form-control" id="title" name=" ">
+                            <option value="" selected="selected">select a value</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="firstName" class="col-form-label">
+                            First name:
+                        </label>
+                        <input type="text" class="form-control" id="firstName" maxlength="30" placeholder="enter your first name">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="middleName" class="col-form-label">
+                            Middle name:
+                        </label>
+                        <input type="text" class="form-control" id="middleName" maxlength="30" placeholder="enter your middle name">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 required">
+                        <label for="lastName" class="required col-form-label">
+                            Last name:
+                        </label>
+                        <input type="text" class="form-control" id="lastName" maxlength="60" placeholder="enter your last name">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 required">
+                        <label for="country" class="col-form-label required">
+                            Country:
+                        </label>
+                        <select class="form-control" id="country"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 required">
+                        <label for="streetAddress" class="col-form-label required" id="streetAddressLabel">
+                            Address:
+                        </label>
+                        <textarea class="form-control" id="streetAddress" cols="20" rows="1"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 required">
+                        <label for="city" class="col-form-label required" id="cityLabel">
+                            City:
+                        </label>
+                        <input type="text" class="form-control" id="city" maxlength="50" placeholder="enter a city">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 required">
+                        <label for="state" class="col-form-label required" id="stateLabel">
+                            State/Province:
+                        </label>
+                        <select class="form-control" id="state"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 required">
+                        <label for="postalCode" class="col-form-label required" id="postalCodeLabel">
+                            ZIP/Postal code:
+                        </label>
+                        <input type="text" class="form-control" id="postalCode" maxlength="10" placeholder="enter a zip code">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 required">
+                        <label for="emailAddress" class="col-form-label required">
+                            Email:
+                        </label>
+                        <input type="email" class="form-control" id="emailAddress" maxlength="120" placeholder="enter an email">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="phone" class="col-form-label">
+                            Phone:
+                        </label>
+                        <input type="text" class="form-control" id="phone" placeholder="enter a phone">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Payment Information</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="formrow required">
+                            <ul class="list-group">
+                                <li id="creditCard">
+                                    <input id="paymentCreditCard" type="radio" name="paymentMethod" value="0" checked="checked" />
+                                    <label for="paymentCreditCard">
+                                        Credit Card
+                                    </label>
+                                </li>
+                                <li id="billMeLater">
+                                    <input id="paymentBillMeLater" type="radio" name="paymentMethod" value="1" />
+                                    <label for="paymentBillMeLater">
+                                        Bill Me Later
+                                    </label>
+                                </li>
+                                <li id="directDebit" style="display:none;">
+                                    <input id="paymentDirectDebit" type="radio" name="paymentMethod" value="2" />
+                                    <label for="paymentDirectDebit">
+                                        DirectDebit
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Matching Gifts</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input type="checkbox" id="isCorporate">
+                        <label for="isCorporate" class="col-form-label">
+                            This donation if on behalf of a company
+                        </label>
+                    </div>
+                </div>
+                <div class="row required invisible" id="organizationNameDiv">
+                    <div class="col-sm-4">
+                        <label for="organizationName" class="col-form-label">
+                            Company name:
+                        </label>
+                        <input type="text" id="organizationName" maxLength="60" placeholder="enter your company name" class="form-control">
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- *********************************************** BILLING/DONOR INFORMATION - SECTION END *********************************************** -->
+            <!-- *********************************************** TRIBUTE - SECTION START *********************************************** -->
+
+            <fieldset class="tribueInformation">
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Tribute /Acknowledgee Information</span></div>
+                </div>
+                <div>
+                    <div class="row">
+                        <div row="col-sm-12">
+                            &nbsp;&nbsp;
+                            <input type="checkbox" id="includeTribue">
+                            <label for="includeTribue" class="col-form-label">
+                                Include tribute:
+                            </label>
+                        </div>
+                    </div>
+                    <div class="invisible" id="tribute">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="required">What kind of tribute:</label>
+                                <ul class="pagination">
+                                    <li>
+                                        <input id="kindSpecific" type="radio" name="radioTribute" value="1" checked="checked" />
+                                        <label for="kindSpecific">
+                                            <span class="term">Specific</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <input id="kindGeneral" type="radio" name="radioTribute" value="2" />
+                                        <label for="kindGeneral">
+                                            <span class="term">General</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="specificTribute" class="col-sm-6">
+                                <div class="formrow">
+                                    <label for="tributeID" class="col-form-label">
+                                        Tribute ID:
+                                    </label>
+                                    <input type="text" class="form-control" id="tributeID" maxlength="60" placeholder="enter a tribute GUID">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="invisible" id="generalTribute">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="tributeFirstName" class="col-form-label">
+                                        First name:
+                                    </label>
+                                    <input type="text" class="form-control" id="tributeFirstName" placeholder="enter a first name">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="tributeLastName" class="col-form-label">
+                                        Last name:
+                                    </label>
+                                    <input type="text" class="form-control" id="tributeLastName" placeholder="enter a last name">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="tributeType" class="col-form-label">
+                                        Type:
+                                    </label>
+                                    <input type="text" class="form-control" id="tributeType" placeholder="enter a tribute type">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="tributeDescription" class="col-form-label">
+                                        Description:
+                                    </label>
+                                    <input type="text" class="form-control" id="tributeDescription" placeholder="enter a description">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="checkbox" id="includeAcknowledgee">
+                                <label for="includeAcknowledgee" class="col-form-label">
+                                    Include acknowledgee:
+                                </label>
+                            </div>
+                        </div>
+                        <div class="invisible" id="acknowledgee">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="acknowledgeeFirstName" class="col-form-label">
+                                        First name:
+                                    </label>
+                                    <input type="text" class="form-control" id="acknowledgeeFirstName" placeholder="enter a first name">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="acknowledgeeLastName" class="col-form-label">
+                                        Last name:
+                                    </label>
+                                    <input type="text" class="form-control" id="acknowledgeeLastName" placeholder="enter a last name">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="acknowledgeeCountry" class="col-form-label">
+                                        Country:
+                                    </label>
+                                    <select class="adfSelect form-control required" id="acknowledgeeCountry"></select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="acknowledgeeAddressLines" id="streetAddressLabelAcknowledgee" class="col-form-label">
+                                        Address lines:
+                                    </label>
+                                    <input type="text" class="form-control" id="acknowledgeeAddressLines" placeholder="enter address lines">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <label for="acknowledgeeCity" id="cityLabelAcknowledgee" class="col-form-label">
+                                        City:
+                                    </label>
+                                    <input type="text" class="form-control" id="acknowledgeeCity" placeholder="enter city">
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="acknowledgeeState" id="stateLabelAcknowledgee" class="col-form-label">
+                                        State:
+                                    </label>
+                                    <select class="adfSelect form-control required" placeholder="State" id="acknowledgeeState"></select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="acknowledgeePostalCode" id="postalCodeLabelAcknowledgee" class="col-form-label">
+                                        Postal code:
+                                    </label>
+                                    <input type="text" class="form-control" id="acknowledgeePostalCode" placeholder="enter postal code">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="acknowledgeeEmail" class="col-form-label">
+                                        Email:
+                                    </label>
+                                    <input type="text" class="form-control" id="acknowledgeeEmail" placeholder="enter email">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="acknowledgeePhone" class="col-form-label">
+                                        Phone:
+                                    </label>
+                                    <input type="text" class="form-control" id="acknowledgeePhone" placeholder="enter phone">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- *********************************************** TRIBUTE - SECTION END *********************************************** -->
+            <!-- *********************************************** ATTRIBUTE INFORMATION - SECTION START *********************************************** -->
+
+            <fieldset class="attributeInformation">
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Attributes</span></div>
+                </div>
+                <div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input type="checkbox" id="includeAttribute1">
+                            <label for="includeAttribute1" class="col-form-label">
+                                Include attribute 1:
+                            </label>
+                        </div>
+                    </div>
+                    <div class="invisible" id="attribute1">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="attribute1ID" class="col-form-label">
+                                    Attribute ID:
+                                </label>
+                                <input type="text" class="form-control" id="attribute1ID" placeholder="enter attribute GUID">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="attribute1Value" class="col-form-label">
+                                    Value:
+                                </label>
+                                <input type="text" class="form-control" id="attribute1Value" placeholder="enter value">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input type="checkbox" id="includeAttribute2">
+                            <label for="includeAttribute2" class="col-form-label">
+                                Include attribute 2:
+                            </label>
+                        </div>
+                    </div>
+                    <div class="invisible" id="attribute2">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="attribute2ID" class="col-form-label">
+                                    Attribute ID:
+                                </label>
+                                <input type="text" class="form-control" id="attribute2ID" placeholder="enter attribute GUID">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="attribute2Value" class="col-form-label">
+                                    Value:
+                                </label>
+                                <input type="text" class="form-control" id="attribute2Value" placeholder="enter value">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- *********************************************** ATTRIBUTE INFORMATION - SECTION END *********************************************** -->
+            <!-- *********************************************** DIRECT DEBIT - SECTION START *********************************************** -->
+
+            <fieldset id="directDebitInformation" style="display:none;">
+                <div class="row">
+                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Direct Debit</span></div>
+                </div>
+                <div id="directDebitSection">
+                    <div class="row" id="tr_DDPDFInstructions">
+                        <div class="col-sm-12 text-justify">
+                            <span>
+                                <i>
+                                    In order to set up a Direct Debit instruction online, you must be the account holder of
+                                    a personal bank or building society account. If you are not the only required signatory
+                                    on your account or you would rather send us a paper version please
+                                    <a ID="lnkDDPDF" title="Direct Debit PDF" href="#"
+                                       Target="_blank" rel="noopener noreferrer">click here</a>
+                                </i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label ID="lblFinancialLBL" class="col-form-label">Financial Institution:</label>
+                            <input type="text" ID="txtFinancialInstitution" MaxLength="100" class="form-control" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label ID="lblBranchName" class="col-form-label">Branch Name:</label>
+                            <input type="text" ID="txtBranchName" MaxLength="100" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2" id="tr_BankingSystemType">
+                            <label ID="lblBankingSystemType" class="col-form-label">Banking System Type:</label>
+                            <select ID="ddlBankingSystemType" class="form-control"></select>
+                        </div>
+                        <div class="col-sm-2">
+                            <label ID="lblRoutNumLBL" class="col-form-label">Routing Number:</label>
+                            <input type="text" ID="txtRoutingNumber" MaxLength="9" class="form-control" />
+                            <a ID="lnk_BankHelp" title="Display help details in another window" style="cursor:pointer;">
+                                <img alt="help" title="Help" style="height:32px;width:36px;vertical-align:bottom; border:0;" />
+                            </a>
+                        </div>
+                        <div class="col-sm-2">
+                            <label ID="lblAccountNumber" class="col-form-label">Account Number:</label>
+                            <span id="spn_AccountNo">
+                                <input type="text" ID="txtAccountNumber" MaxLength="20" class="form-control" />
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-4" id="tr_CanadaTransitNum">
+                                    <label ID="lblCanadaTransitNum" class="col-form-label">Transit Number:</label>
+                                    <input type="text" ID="txtCanTransitNumber" MaxLength="5" class="form-control" />
+                                </div>
+                                <div class="col-sm-8" id="spn_AccountNoNZ">
+                                    <br />
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <input type="text" ID="txtAccountNumberNZ" MaxLength="7" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <span>-</span>
+                                            </td>
+                                            <td>
+                                                <input type="text" ID="txtSuffixNZ" MaxLength="3" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <label ID="lblSuffixNZ" Visible="false" class="col-form-label"></label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3" id="tr_AccountType">
+                        <label ID="lblAccountType" class="col-form-label">Account Type:</label>
+                        <select ID="ddlAccountType" class="form-control"></select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label ID="lblAccountHolderName" class="col-form-label">Account Holder's Name:</label>
+                        <input type="text" ID="txtAccountHolder" MaxLength="50" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3" id="tr_CurrentDate">
+                        <label ID="lblDebitDate" class="col-form-label">Date :</label>
+                        <label ID="lbl_CurrentDate" class="col-form-label"></label>
+                    </div>
+                    <div class="col-sm-3" id="tr_OrigNumber">
+                        <label ID="lblOriginatorID" class="col-form-label">Service user's ID number :</label>
+                        <label ID="lbl_OrigNumber" class="col-form-label"></label>
+                    </div>
+                </div>
+                <div id="tr_DDBankInstructions" class="text-justify">
+                    <span colspan="3">
+                        <label><b>Instruction to your Bank or Building Society</b></label>
+                        <label ID="lbl_DDBankInstructions" class="col-form-label">
+                            <i>
+                                Please pay %1 Direct Debits from the account detailed in this Instruction subject to the safeguards assured by
+                                the Direct Debit Guarantee. I understand that this Instruction may remain with %1 and, if so, details will be passed
+                                electronically to my Bank/Building Society.
+                            </i>
+                        </label>
+                        <label>
+                            <i>Banks and Building Societies may not accept Direct Debit Instructions for some types of account.</i>
+                        </label>
+                    </span>
+                </div>
+                <div id="tr_DDInstructions">
+                    <span colspan="3">
+                        <img alt="Direct Debit" title="Direct Debit" style="text-align: center;" />
+                        <a ID="lnk_DDGuarantee" title="Display the Direct Debit Guarantee in another window" href="#"
+                           style="cursor:pointer;color:blue;text-decoration:underline;">The Direct Debit Guarantee</a>
+                    </span>
+                </div>
+                <div id="tr_DDPDFInstructions2" class="text-justify">
+                    <span colspan="2">
+                        <label>
+                            <i>By clicking 'Donate Now' you are confirming that you are the account holder and that you are the only person required to authorize debits from this account.</i>
+                        </label>
+                    </span>
+                </div>
+            </fieldset>
+
+            <!-- *********************************************** DIRECT DEBIT - SECTION END *********************************************** -->
+            <br />
+            <!-- This is the final 'Donate' button, when Donor fill the all required field of page after that press this button for Submit Donation. -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <input id="donate" class="submit btn btn-success form-control" type="button" value="Donate" />
+                </div>
+                <div class="col-sm-6">
+                    <input class="btn btn-danger form-control" type="reset" value="Reset" />
+                </div>
             </div>
-          </div>
+
         </div>
-        <div class="col-sm-6">
-          
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <p>
-            <button class="btn btn-lg btn-primary btn-donate" ng-click="log()">
-              <i class="fa fa-lock"></i> Donate
-            </button>
-          </p>
-        </div>
-      </div>
+
+        <!-- Its a compulsory div, it display the Confirmation screen with Donor details after successful donation. -->
+        <div class="confirmation container"></div>
     </div>
-  
-  </form>
-  
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.2/ui-bootstrap-tpls.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>  
-  <script src="//[ENTER-YOUR-BBIS-URL-HERE]/Client/Scripts/easyXDM/easyXDM.min.js"></script>
-  <script src="//[ENTER-YOUR-BBIS-URL-HERE]/Client/Scripts/API/BBAPI-min.js"></script>
-  <script src="example-complete.js"></script>
-  
 </body>
 </html>
