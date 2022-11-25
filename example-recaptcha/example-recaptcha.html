@@ -1,0 +1,27 @@
+<ul class="list-group">
+		<!-- Bind the onclick funtionality to de-render recaptcha -->
+		<li id="creditCard">
+			<input id="paymentCreditCard" type="radio" name="paymentMethod" value="0" onclick="handleRadioClickEvent(this);" checked="checked" />
+			<label for="paymentCreditCard">
+				Credit Card
+			</label>
+		</li>
+		<!-- Bind the onclick funtionality to render recaptcha -->
+		<li id="billMeLater">
+			<input id="paymentBillMeLater" type="radio" name="paymentMethod" value="1" onclick="handleRadioClickEvent(this);" />
+			<label for="paymentBillMeLater">
+				Bill Me Later
+			</label>
+		</li>
+		<!-- Bind the onclick funtionality to de-render recaptcha -->
+		<li id="directDebit" style="display:none;">
+			<input id="paymentDirectDebit" type="radio" name="paymentMethod" value="2" onclick="handleRadioClickEvent(this);" />
+			<label for="paymentDirectDebit">
+				DirectDebit
+			</label>
+		</li>
+	</ul>
+	
+	 
+	<!-- intialising div for recaptcha -->
+	<div id="g_captcha"></div><br />
