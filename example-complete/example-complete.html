@@ -419,19 +419,19 @@
                         <div class="formrow required">
                             <ul class="list-group">
                                 <li id="creditCard">
-                                    <input id="paymentCreditCard" type="radio" name="paymentMethod" value="0" checked="checked" />
+                                    <input id="paymentCreditCard" type="radio" name="paymentMethod" value="0" onclick="handleRadioClickEvent(this);"  checked="checked" />
                                     <label for="paymentCreditCard">
                                         Credit Card
                                     </label>
                                 </li>
                                 <li id="billMeLater">
-                                    <input id="paymentBillMeLater" type="radio" name="paymentMethod" value="1" />
+                                    <input id="paymentBillMeLater" type="radio" name="paymentMethod" value="1" onclick="handleRadioClickEvent(this);" />
                                     <label for="paymentBillMeLater">
                                         Bill Me Later
                                     </label>
                                 </li>
                                 <li id="directDebit" style="display:none;">
-                                    <input id="paymentDirectDebit" type="radio" name="paymentMethod" value="2" />
+                                    <input id="paymentDirectDebit" type="radio" name="paymentMethod" value="2" onclick="handleRadioClickEvent(this);" />
                                     <label for="paymentDirectDebit">
                                         DirectDebit
                                     </label>
@@ -807,6 +807,7 @@
 
             <!-- *********************************************** DIRECT DEBIT - SECTION END *********************************************** -->
             <br />
+			<div id="g_captcha"></div><br />
             <!-- This is the final 'Donate' button, when Donor fill the all required field of page after that press this button for Submit Donation. -->
             <div class="row">
                 <div class="col-sm-6">
