@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
-  <title>ADF - Complete Example</title>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    
-  <script type="text/javascript">
+
+    <title>ADF - Complete Example(Payment 2.0)</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.2.0/css/bootstrap.min.css">
+
+    <script type="text/javascript">
 
         /*------------------------------------------- PART CONFIGURATION - SECTION START -------------------------------------------*/
 
@@ -19,15 +19,15 @@
 
         var cnstType = ($('.BBDonationApiContainer').attr('cnsttype') == "True");
 
-        /*------------------------------------------- PART CONFIGURATION - SECTION END -------------------------------------------*/
+            /*------------------------------------------- PART CONFIGURATION - SECTION END -------------------------------------------*/
 
-  </script>
-	
+    </script>
+
 </head>
 <body>
-  <div class="donationForm container">
+<div class="donationForm container">
         <div class="alert" style="background-color:#b6cbe5;">
-            <h3>Advanced Donation Form <small>Complete Example</small></h3>
+            <h3>Advanced Donation Form <small>Complete Example(Payment 2.0)</small></h3>
         </div>
         <div class="validation"></div>
         <div class="consentValidation" id="inline" style="display:none"></div>
@@ -414,26 +414,15 @@
                 <div class="row">
                     <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Payment Information</span></div>
                 </div>
+
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="formrow required">
                             <ul class="list-group">
-                                <li id="creditCard">
-                                    <input id="paymentCreditCard" type="radio" name="paymentMethod" value="0" onclick="handleRadioClickEvent(this);"  checked="checked" />
+                                <li>
+                                    <input id="paymentCreditCard" type="radio" name="paymentMethod" value="0" checked="checked" />
                                     <label for="paymentCreditCard">
                                         Credit Card
-                                    </label>
-                                </li>
-                                <li id="billMeLater">
-                                    <input id="paymentBillMeLater" type="radio" name="paymentMethod" value="1" onclick="handleRadioClickEvent(this);" />
-                                    <label for="paymentBillMeLater">
-                                        Bill Me Later
-                                    </label>
-                                </li>
-                                <li id="directDebit" style="display:none;">
-                                    <input id="paymentDirectDebit" type="radio" name="paymentMethod" value="2" onclick="handleRadioClickEvent(this);" />
-                                    <label for="paymentDirectDebit">
-                                        DirectDebit
                                     </label>
                                 </li>
                             </ul>
@@ -567,7 +556,21 @@
                                     <label for="acknowledgeeCountry" class="col-form-label">
                                         Country:
                                     </label>
-                                    <select class="adfSelect form-control required" id="acknowledgeeCountry"></select>
+                                    <select class="adfSelect form-control required" id="acknowledgeeCountry">
+                                        <option value="ec78fd4f-0c4b-4957-aa3f-2eea818ac1a5">Argentina</option>
+                                        <option value="7956b929-d5c4-464c-a4a1-3890e62a7169">Australia</option>
+                                        <option value="fee54b28-1e87-471a-8911-3a2d2bd3a495">Canada</option>
+                                        <option value="7abaec6b-9dae-48b6-aefd-ed49a8a17014">Cyprus</option>
+                                        <option value="3b14baef-0885-40b8-b2d3-61952b4ee65f">Germany</option>
+                                        <option value="9010ab76-fa31-49da-af40-11b55a1a2325">Italy</option>
+                                        <option value="f56237ae-2818-4709-abe3-9033f0f5f2bc">Micronesia</option>
+                                        <option value="8b2bfd13-5ba7-4285-b8f5-cb7b66bad0da">Netherlands</option>
+                                        <option value="b7136318-8d3f-4433-b8a0-5f5243b8e0ca">New Zealand</option>
+                                        <option value="e6c46278-273b-4cde-80ac-b760bff10d39">Philippines</option>
+                                        <option value="b6ac77f4-921b-4f06-94a1-71681be655d3">Switzerland</option>
+                                        <option value="4a1fefc1-c1d1-4a07-a574-a45f522c9ea7">United Kingdom</option>
+                                        <option value="00cb6cdb-f6cf-44e2-9c73-51ddf7965d8f">United States</option>
+                                    </select>
                                 </div>
                                 <div class="col-sm-3">
                                     <label for="acknowledgeeAddressLines" id="streetAddressLabelAcknowledgee" class="col-form-label">
@@ -578,19 +581,84 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <label for="acknowledgeeCity" id="cityLabelAcknowledgee" class="col-form-label">
+                                    <label for="acknowledgeeCity" class="col-form-label">
                                         City:
                                     </label>
-                                    <input type="text" class="form-control" id="acknowledgeeCity" placeholder="enter city">
+                                    <input type="text" class="form-control" placeholder="enter city">
                                 </div>
                                 <div class="col-sm-2">
-                                    <label for="acknowledgeeState" id="stateLabelAcknowledgee" class="col-form-label">
+                                    <label for="acknowledgeeState" class="col-form-label">
                                         State:
                                     </label>
-                                    <select class="adfSelect form-control required" placeholder="State" id="acknowledgeeState"></select>
-                                </div>
+                                    <select class="adfSelect form-control required" placeholder="State" id="acknowledgeeState">
+                                        <option value="b7fdbb29-e38f-4e31-91ca-f18b0a75d6b2">Alabama</option>
+                                        <option value="5ef7a238-bedc-40d3-b75c-989eb359843e">Alaska</option>
+                                        <option value="fdc812c4-0469-4b18-a8b2-69cf758d5b72">American Samoa</option>
+                                        <option value="7bda2468-7402-4fe8-a79e-976905e0d1d6">Arizona</option>
+                                        <option value="00347042-1e92-40f4-8c7c-43967a0288b4">Arkansas</option>
+                                        <option value="9538fd5a-a2b7-41c7-bd36-cd76398f8bdb">Armed Forces Americas</option>
+                                        <option value="26ff2ab5-265f-4d15-87df-3eb3c47fe016">Armed Forces Europe/Canada/Middle East/Africa</option>
+                                        <option value="52a39054-3772-4d63-b11b-7b0e1867b2bd">Armed Forces Pacific</option>
+                                        <option value="c4898e64-c833-40d0-a56d-2910304c1389">BC</option>
+                                        <option value="622c184d-c9f9-4128-ba77-93c294fbae04">California</option>
+                                        <option value="8ee83ecc-8782-4bc6-a1f6-44962c469284">Canal Zone</option>
+                                        <option value="e4456832-9543-48ca-aa8b-44490e558ac4">Colorado</option>
+                                        <option value="d2bd2357-3300-4859-9df6-f3c68af7439e">Connecticut</option>
+                                        <option value="7af4bbb5-0a3b-45ac-8f15-429c1463bce2">Delaware</option>
+                                        <option value="09513ecd-d82b-4f86-812b-06e1b1dc07f9">District of Columbia</option>
+                                        <option value="761ce051-3215-4d17-ba5f-db6be05064a3">Federated States of Micronesia</option>
+                                        <option value="ea60d50f-2b7c-4863-967a-a9941b23f523">Florida</option>
+                                        <option value="44d1976c-fcf5-49da-a087-81b3758a96b8">Georgia</option>
+                                        <option value="39b0a266-edea-4bab-b3b4-35011348a827">Guam</option>
+                                        <option value="a84bdc99-4ce6-4982-9f62-b9909e3129dd">Hawaii</option>
+                                        <option value="5183c79e-f864-409a-9c5e-f3df27e07f64">Idaho</option>
+                                        <option value="26d92ff6-7eb9-4408-a992-87215d01edb5">Illinois</option>
+                                        <option value="a795cfc1-6de2-4a12-9c81-132341cf1be8">Indiana</option>
+                                        <option value="6938e175-b0c8-4c1f-8eda-8530e9140396">Iowa</option>
+                                        <option value="253b6dd5-79df-4643-b0a9-b4d90892a222">Kansas</option>
+                                        <option value="12edd14f-9243-4494-aa00-8e7d17a0b325">Kentucky</option>
+                                        <option value="0ea93967-4c8c-4ad7-8474-e26ee6910b43">Louisiana</option>
+                                        <option value="c55d6232-d823-446e-9da4-6d2650d99331">Maine</option>
+                                        <option value="23fd2d13-5760-4f18-b91b-3a542095a732">Marshall Islands</option>
+                                        <option value="e1ca3663-9e34-4819-b2dc-22d7a1e601fe">Maryland</option>
+                                        <option value="fc58e48c-ea64-45b7-9f6b-ac2e73b16323">Massachusetts</option>
+                                        <option value="798463d6-5e40-48d8-8b30-1786513676ce">Michigan</option>
+                                        <option value="4daad583-a1b9-420c-8861-2641a2c04e0f">Minnesota</option>
+                                        <option value="828412a7-4549-4c89-b9dc-9ddd25c72a4d">Mississippi</option>
+                                        <option value="c3b88d6e-f2a9-444d-9b42-31d5c0e31538">Missouri</option>
+                                        <option value="dedf7663-9081-489c-af27-d3c19fef8c53">Montana</option>
+                                        <option value="04ccbc39-7807-4bc0-b942-2d88cd43e8f6">Nebraska</option>
+                                        <option value="ce7ac87e-c243-4f84-bd56-e822e2d38b73">Nevada</option>
+                                        <option value="b50ac14b-0191-4634-bd18-3194292a9d62">New Hampshire</option>
+                                        <option value="9b952f48-8408-49f0-bbff-6ecbe2cd3d0b">New Jersey</option>
+                                        <option value="6210d152-26df-4332-aad0-559117f6bdf9">New Mexico</option>
+                                        <option value="76eb36e6-5ae4-4aa5-84ed-966d7f42fa40">New York</option>
+                                        <option value="75bbdb2b-b060-408e-b97e-e25f62e523c2">North Carolina</option>
+                                        <option value="83450032-6ddf-4ce3-a21a-3181eede8799">North Dakota</option>
+                                        <option value="c59c81a3-3e2b-4708-940c-00e198c1ea93">Northern Mariana Islands</option>
+                                        <option value="b43db303-5388-45d7-adae-c7272d9c563c">Ohio</option>
+                                        <option value="f576a438-ebe9-4045-9ee7-0e81e9a87909">Oklahoma</option>
+                                        <option value="c48d061f-20a7-4a63-8557-31b660aa67d4">Oregon</option>
+                                        <option value="c3628e38-834a-45fe-8784-c6da8c9a3ceb">Palau</option>
+                                        <option value="72f7ac61-db2f-4888-bde7-16312bc7cf58">Pennsylvania</option>
+                                        <option value="95076f20-748b-4265-a875-cf1d3a22c1d3">Puerto Rico</option>
+                                        <option value="9988e83d-9af8-4e7b-b8df-569f58de6ec9">Rhode Island</option>
+                                        <option value="16f1b713-c4ba-450d-abdd-fb73854566ff">South Carolina</option>
+                                        <option value="1765411d-e578-4492-bc06-7cbc38ae738d">South Dakota</option>
+                                        <option value="03501976-ea73-472e-b685-a5df251fdea3">Tennessee</option>
+                                        <option value="d88653af-0b6c-4104-b75e-5987536a38fc">Texas</option>
+                                        <option value="fbb15fae-1c6b-445b-a435-9b6ce8c50105">Utah</option>
+                                        <option value="17b17177-af25-4179-9493-2a2db15f0ae6">Vermont</option>
+                                        <option value="20b0a289-1807-45c2-89b5-614d14b8f5aa">Virgin Islands</option>
+                                        <option value="cfbc8dce-2cc5-4681-aaf8-8a8c1e5d8d43">Virginia</option>
+                                        <option value="c56c4d01-363c-4f6b-bb01-17e19aee6504">Washington</option>
+                                        <option value="67de067a-bed9-4768-b4cc-b24d23b5b94e">West Virginia</option>
+                                        <option value="dd00a540-1194-4b53-bf88-ada4a6e2a69d">Wisconsin</option>
+                                        <option value="65f8f915-56fb-45d9-a85c-37d41e50b7a2">Wyoming</option>
+                                    </select>
+                                </div>                            
                                 <div class="col-sm-2">
-                                    <label for="acknowledgeePostalCode" id="postalCodeLabelAcknowledgee" class="col-form-label">
+                                    <label for="acknowledgeePostalCode" class="col-form-label">
                                         Postal code:
                                     </label>
                                     <input type="text" class="form-control" id="acknowledgeePostalCode" placeholder="enter postal code">
@@ -675,139 +743,7 @@
             </fieldset>
 
             <!-- *********************************************** ATTRIBUTE INFORMATION - SECTION END *********************************************** -->
-            <!-- *********************************************** DIRECT DEBIT - SECTION START *********************************************** -->
-
-            <fieldset id="directDebitInformation" style="display:none;">
-                <div class="row">
-                    <div class="col-md-12"><span class="btn form-control" style="background-color: #339;color:#fff;">Direct Debit</span></div>
-                </div>
-                <div id="directDebitSection">
-                    <div class="row" id="tr_DDPDFInstructions">
-                        <div class="col-sm-12 text-justify">
-                            <span>
-                                <i>
-                                    In order to set up a Direct Debit instruction online, you must be the account holder of
-                                    a personal bank or building society account. If you are not the only required signatory
-                                    on your account or you would rather send us a paper version please
-                                    <a ID="lnkDDPDF" title="Direct Debit PDF" href="#"
-                                       Target="_blank" rel="noopener noreferrer">click here</a>
-                                </i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <label ID="lblFinancialLBL" class="col-form-label">Financial Institution:</label>
-                            <input type="text" ID="txtFinancialInstitution" MaxLength="100" class="form-control" />
-                        </div>
-                        <div class="col-sm-3">
-                            <label ID="lblBranchName" class="col-form-label">Branch Name:</label>
-                            <input type="text" ID="txtBranchName" MaxLength="100" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-2" id="tr_BankingSystemType">
-                            <label ID="lblBankingSystemType" class="col-form-label">Banking System Type:</label>
-                            <select ID="ddlBankingSystemType" class="form-control"></select>
-                        </div>
-                        <div class="col-sm-2">
-                            <label ID="lblRoutNumLBL" class="col-form-label">Routing Number:</label>
-                            <input type="text" ID="txtRoutingNumber" MaxLength="9" class="form-control" />
-                            <a ID="lnk_BankHelp" title="Display help details in another window" style="cursor:pointer;">
-                                <img alt="help" title="Help" style="height:32px;width:36px;vertical-align:bottom; border:0;" />
-                            </a>
-                        </div>
-                        <div class="col-sm-2">
-                            <label ID="lblAccountNumber" class="col-form-label">Account Number:</label>
-                            <span id="spn_AccountNo">
-                                <input type="text" ID="txtAccountNumber" MaxLength="20" class="form-control" />
-                            </span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-4" id="tr_CanadaTransitNum">
-                                    <label ID="lblCanadaTransitNum" class="col-form-label">Transit Number:</label>
-                                    <input type="text" ID="txtCanTransitNumber" MaxLength="5" class="form-control" />
-                                </div>
-                                <div class="col-sm-8" id="spn_AccountNoNZ">
-                                    <br />
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <input type="text" ID="txtAccountNumberNZ" MaxLength="7" class="form-control" />
-                                            </td>
-                                            <td>
-                                                <span>-</span>
-                                            </td>
-                                            <td>
-                                                <input type="text" ID="txtSuffixNZ" MaxLength="3" class="form-control" />
-                                            </td>
-                                            <td>
-                                                <label ID="lblSuffixNZ" Visible="false" class="col-form-label"></label>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3" id="tr_AccountType">
-                        <label ID="lblAccountType" class="col-form-label">Account Type:</label>
-                        <select ID="ddlAccountType" class="form-control"></select>
-                    </div>
-                    <div class="col-sm-3">
-                        <label ID="lblAccountHolderName" class="col-form-label">Account Holder's Name:</label>
-                        <input type="text" ID="txtAccountHolder" MaxLength="50" class="form-control" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3" id="tr_CurrentDate">
-                        <label ID="lblDebitDate" class="col-form-label">Date :</label>
-                        <label ID="lbl_CurrentDate" class="col-form-label"></label>
-                    </div>
-                    <div class="col-sm-3" id="tr_OrigNumber">
-                        <label ID="lblOriginatorID" class="col-form-label">Service user's ID number :</label>
-                        <label ID="lbl_OrigNumber" class="col-form-label"></label>
-                    </div>
-                </div>
-                <div id="tr_DDBankInstructions" class="text-justify">
-                    <span colspan="3">
-                        <label><b>Instruction to your Bank or Building Society</b></label>
-                        <label ID="lbl_DDBankInstructions" class="col-form-label">
-                            <i>
-                                Please pay %1 Direct Debits from the account detailed in this Instruction subject to the safeguards assured by
-                                the Direct Debit Guarantee. I understand that this Instruction may remain with %1 and, if so, details will be passed
-                                electronically to my Bank/Building Society.
-                            </i>
-                        </label>
-                        <label>
-                            <i>Banks and Building Societies may not accept Direct Debit Instructions for some types of account.</i>
-                        </label>
-                    </span>
-                </div>
-                <div id="tr_DDInstructions">
-                    <span colspan="3">
-                        <img alt="Direct Debit" title="Direct Debit" style="text-align: center;" />
-                        <a ID="lnk_DDGuarantee" title="Display the Direct Debit Guarantee in another window" href="#"
-                           style="cursor:pointer;color:blue;text-decoration:underline;">The Direct Debit Guarantee</a>
-                    </span>
-                </div>
-                <div id="tr_DDPDFInstructions2" class="text-justify">
-                    <span colspan="2">
-                        <label>
-                            <i>By clicking 'Donate Now' you are confirming that you are the account holder and that you are the only person required to authorize debits from this account.</i>
-                        </label>
-                    </span>
-                </div>
-            </fieldset>
-
-            <!-- *********************************************** DIRECT DEBIT - SECTION END *********************************************** -->
             <br />
-			<div id="g_captcha"></div><br />
             <!-- This is the final 'Donate' button, when Donor fill the all required field of page after that press this button for Submit Donation. -->
             <div class="row">
                 <div class="col-sm-6">

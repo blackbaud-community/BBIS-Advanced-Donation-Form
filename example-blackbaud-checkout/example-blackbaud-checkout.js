@@ -3,11 +3,13 @@
  // Create an instance of the DonationService
   var ds = new BLACKBAUD.api.DonationService(
   $('.BBDonationApiContainer').data('partid')),
+		 ClientSitesID = $(".BBDonationApiContainer").attr("ClientSitesID");
+         CheckoutModel=JSON.parse(checkoutData),
          serverMonth = $(".BBDonationApiContainer").attr("serverMonth") - 1,
          serverDay = $(".BBDonationApiContainer").attr("serverDay"),
          serverYear = $(".BBDonationApiContainer").attr("serverYear"),
          ServerDate = new Date(serverYear, serverMonth, serverDay);
-		 
+		 InitializeBBCheckout();
   var donationAmount = getDonationAmount();
         var numberOfInstallments = $("#number-of-installments").val();
         var installmentAmount = ds.getRecurringGiftInstallmentAmount(donationAmount, numberOfInstallments);
@@ -49,8 +51,8 @@
     });
 
 	
-	 var  SrtDt, publicKey, donationData, EditorContent, ServerDate,
-        checkoutGenericError = "There was an error while performing the operation.The page will be refreshed";
+	 var  SrtDt, donationData, ServerDate, ClientSitesID,
+        checkoutGenericError = "There was an error while performing the operation. The page will be refreshed";
 		
 	//return the donation amount	
 	function getDonationAmount() {
@@ -61,13 +63,7 @@
         }
     }
 	
-	 //Handle Generic error 
-    function handleError(errorMessage) {
-        $("#bbspLoadingOverlay").hide();
-        alert(checkoutGenericError);
-        location.reload(true);
-    }
-
+	
     //#region CCCheckoutPayment
 
 	//return which payment method is selected on the page
@@ -75,37 +71,7 @@
         paymentMethod = $("[name='paymentMethod']:checked").val();
         return paymentMethod;
     }
-
-	//set the public key by using public key service that is used to open the checkout pop up
-    function GetPublicKey() {
-     
-    onPublicKeySuccess = function (reply) {
-        publicKey = JSON.parse(reply.Data).PublicKey;
-    };
-    
-	onPublicKeyFailure = function (d) {
-    };
-    
-	ds.getCheckoutPublicKey(onPublicKeySuccess, onPublicKeyFailure);
-
-    }
-
-
-	//get all the information that is configured on the editor used to open the checkout pop up
-    function GetEditorInformation(partId) {
-
-        onEditorContentSuccess = function onSuccess(content) {
-            donation.MerchantAccountId = content.MerchantAccountID;
-            EditorContent = content;
-        };
-
-        onEditorContentFailure = function onFail(error) {
-        };
-
-        ds.getADFEditorContentInformation(partId, onEditorContentSuccess, onEditorContentFailure);
-
-    }
-
+	
 
     function getUrlVars(url) {
         var vars = [], hash;
@@ -118,57 +84,110 @@
         return vars;
     }
 
-	//this is the function that calls the payment api to open the checkout pop up with all the parameters
-    this.makePayment = function () {
-        opened = false;
-
-        var checkout = new SecureCheckout(handleCheckoutComplete, handleCheckoutError, handleCheckoutCancelled, handleCheckoutLoaded);
+	// this is the function that calls the payment api to open the checkout pop up with all the parameters
+    this.makePayment = function () {       
         var donor = data.Donor;
 		var selectedCountry=$("#country :selected").attr("iso");
 		var selectedState=$("#state :selected").attr("iso");
 		
-		if(selectedCountry && selectedCountry=="GB")
+		if(selectedCountry && selectedCountry.toLowerCase() =="gb")
 		{
 			selectedCountry="UK";
 		}
-        donationData = {
-            "key": publicKey,
-            'Amount': ($("#recMonthly").prop("checked")) ? installmentAmt : getDonationAmount(),
-            'UseCaptcha': EditorContent.RecaptchRequired,
-            'BillingAddressCity': donor.Address.City,
-            'BillingAddressCountry': selectedCountry,
-            'BillingAddressLine': donor.Address.StreetAddress,
-            'BillingAddressPostCode': donor.Address.PostalCode,
-            'BillingAddressState': selectedState,
-            'BillingAddressEmail': donor.EmailAddress,
-            'BillingAddressFirstName': donor.FirstName + " " +donor.MiddleName,
-            'BillingAddressLastName': donor.LastName,
-            'Cardholder': donor.FirstName + " " + donor.LastName,
-            'ClientAppName': 'BBIS',
-            'MerchantAccountId': EditorContent.MerchantAccountID,
-            'IsEmailRequired': true,
-            'PrimaryColor': EditorContent.PrimaryFontColor,
-            'SecondaryColor': EditorContent.SecondaryFontColor,
-            'FontFamily': EditorContent.FontType,
-            'IsNameVisible': true,
-          'UseVisaCheckout': EditorContent.UseVisaPass && (data.Gift && !data.Gift.Recurrence),
-          'UseMasterpass': EditorContent.UseMasterPass && (data.Gift && !data.Gift.Recurrence),
-          'UseApplePay': EditorContent.UseApplePay && (data.Gift && !data.Gift.Recurrence)
-        };
-       if (data.Gift && data.Gift.Recurrence )
-		{
-			donationData.CardToken = EditorContent.DataKey;
-		}
-
-        //check server date and start date here -- if same then make transaction today
+            bbcheckout.Configuration.Data.Amount = ($("#recMonthly").prop("checked")) ? installmentAmt : getDonationAmount();            
+            bbcheckout.Configuration.Data.BillingAddressCity = donor.Address.City;
+            bbcheckout.Configuration.Data.BillingAddressCountry = selectedCountry;
+            bbcheckout.Configuration.Data.BillingAddressLine = donor.Address.StreetAddress;
+            bbcheckout.Configuration.Data.BillingAddressPostCode = donor.Address.PostalCode;
+            bbcheckout.Configuration.Data.BillingAddressState = selectedState;
+            bbcheckout.Configuration.Data.BillingAddressEmail = donor.EmailAddress;
+            bbcheckout.Configuration.Data.BillingAddressFirstName = donor.FirstName + " " + (donor.MiddleName ? donor.MiddleName:"");
+            bbcheckout.Configuration.Data.BillingAddressLastName = donor.LastName;
+            bbcheckout.Configuration.Data.Cardholder = donor.FirstName + " " + donor.LastName;
+			bbcheckout.Configuration.Data.UseVisaCheckout = (data.Gift && !data.Gift.Recurrence);
+			bbcheckout.Configuration.Data.UseMasterpass = (data.Gift && !data.Gift.Recurrence);
+			bbcheckout.Configuration.Data.UseApplePay = (data.Gift && !data.Gift.Recurrence);
+            bbcheckout.Configuration.TransactionType = bbcheckout.TransactionType.Card_Not_Present;
+            bbcheckout.Configuration.Data.CardToken = null;
+	   
         if (data.Gift && data.Gift.Recurrence && !data.Gift.Recurrence.ProcessNow) {
-            return checkout.processStoredCard(donationData);
+            bbcheckout.Configuration.Data.CardToken = CheckoutModel.DataKey;
+            bbcheckout.Configuration.TransactionType = bbcheckout.TransactionType.Store_Card; //Store card transactions
+        } else if (data.Gift && data.Gift.Recurrence ) {      //Set CardToken value only in case of recurring gifts.
+            bbcheckout.Configuration.Data.CardToken = CheckoutModel.DataKey;
         }
-        else {
 
-            return checkout.processCardNotPresent(donationData);
-        }
+        //Set Donor Info so that it will be passed to finish the transaction at the end.
+		    data.DonationSource = bbcheckout.Configuration.DonationSource.ADF;
+		    data.Type=bbcheckout.Configuration.TranType.Donation;
+        bbcheckout.DonorInfo = data;
+        bbcheckout.openCheckout();
     }
+	
+	 function InitializeBBCheckout() 
+   {
+	   
+	      bbcheckout = new BBCheckoutProcessor(checkoutFunctions(),CheckoutModel.APIControllerName,CheckoutModel.TokenId,'[class*="donationForm"]');
+	      bbcheckout.Configuration.Data.Key = CheckoutModel.PublicKey;
+        bbcheckout.Configuration.TransactionType = CheckoutModel.TransactionType;
+        bbcheckout.Configuration.Data.ClientAppName = CheckoutModel.ClientAppName;        
+        bbcheckout.Configuration.Data.MerchantAccountId = CheckoutModel.MerchantAccountId;
+        bbcheckout.Configuration.Data.IsEmailRequired = CheckoutModel.IsEmailRequired;;
+        bbcheckout.Configuration.Data.IsNameVisible = CheckoutModel.IsNameVisible;;
+        bbcheckout.Configuration.Data.PrimaryColor = CheckoutModel.PrimaryColor;
+        bbcheckout.Configuration.Data.SecondaryColor = CheckoutModel.SecondaryColor;
+        bbcheckout.Configuration.Data.FontFamily = CheckoutModel.FontFamily;
+        bbcheckout.Configuration.Data.UseCaptcha = CheckoutModel.UseCaptcha;
+        bbcheckout.Configuration.WorkflowType = CheckoutModel.WorkFlowType;
+        bbcheckout.Configuration.HandleBrowserClosing = (CheckoutModel.HandleBrowserClosing === true ? "True" : "False");
+        bbcheckout.Configuration.APITokenID = CheckoutModel.TokenId;
+	      // You can add your own message to display on screen, after checkout pop-up close
+        bbcheckout.Configuration.TempConfirmationHtml = "Thank you for your contribution, please wait while we process your transaction.";
+        bbcheckout.intializeCheckout();
+   }
+
+function checkoutFunctions()
+   {
+	  //  If you don't have anything to do then you don't add any events from below mentioned checkoutEvents 
+	  checkoutEvents={
+		   checkoutComplete : function (e) {
+        //Place any code if you want to do anything on checkout complete.
+
+       
+
+        bbcheckout.postCheckoutFinish();
+    },
+
+    checkoutError : function (data) {
+        //Place any code if you want to do anything on error.
+    },
+
+    checkoutExpired : function () {
+        //Place any code if you want to do anything on Checkout expired.
+    },
+
+    checkoutReady : function () {
+        //Place any code if you want to do anything on Checkout Ready.
+    },
+
+    browserClose : function () {
+        //Place any code if you want to do anything on Checkout Browser closing.
+
+    },
+
+    checkoutCancel : function () {
+        //Place any code if you want to do anything on Checkout cancel.
+    },
+
+    checkoutLoaded : function () {
+        //Place any code if you want to do anything on Checkout loaded.
+    }
+
+		  
+	  }
+
+return checkoutEvents;	  
+   }
 
 	//to check for recurring gift that is to be processed today or not (this is check for call stored card payment api)
     function isProcessNow() {
@@ -227,90 +246,8 @@
 
 
     };
-
-	//when checkout popup is successfully loaded
-    handleDonationCreated = function (data) {
-        var orderID = JSON.parse(data.Data).OrderId;
-    }
-
-	//when checkout popup is fail to load
-    this.handleDonationCreateFailed = function (error) {
-        handleError(error);
-    }
-
-	//when the payment is successfully completed and we have to show the confirnmation screen
-    this.handlePaymentComplete = function (data) {
-        $("#bbspLoadingOverlay").hide();
-        //confirmation message show here
-		//donationform
-        $(".form").hide();
-		//confirmation div
-        $(".confirmation").show();
-
-       $(".confirmation").html(JSON.parse(data.Data).confirmationHTML);
-    }
-
-	//this function called when the checkout popup is loaded on a page
-    function handleCheckoutLoaded() {
-
-        if (!opened) {
-
-            opened = true;
-            var url = $("#bbCheckoutPaymentIframe").prop('src');
-            var tid = getUrlVars(url)["t"];
-
-            //save transaction id in global variable. Will be used throughout the transaction
-            this.transactionIDl = tid;
-
-            if (tid) {
-                data.TokenId = tid;
-                ds.checkoutDonationCreate(data, handleDonationCreated, handleDonationCreateFailed);
-                return false;
-            }
-        }
-
-        return false;
-    }
-
-	//when we cancel the payment pop up hen unbind all the binded events on checkout popup
-    function UnBindPaymentCheckoutEvents() {
-        $(document).unbind("checkoutComplete");
-        $(document).unbind("checkoutLoaded");
-        $(document).unbind("checkoutError");
-        $(document).unbind("checkoutCancel");
-    }
-
-	//this is called when the payment is completed
-    function handleCheckoutComplete(event, tranToken) {
-        $("#bbspLoadingOverlay").show();
-		var Id=tranToken ? tranToken :(event?(event.detail?(event.detail.transactionToken?event.detail.transactionToken:null):null):null);
-        if (Id) {
-            data.TokenId = Id;
-            ds.checkoutDonationComplete(data, handlePaymentComplete, handleDonationCreateFailed);
-        }
-        else {
-            handleError();
-        }
-		UnBindPaymentCheckoutEvents();
-        return false;
-    }
-
-	//call when there is any error while doing the payment on checkout pop up
-    handleCheckoutError = function (event, errorMsg, errorCode) {
-        handleError(errorMsg);
-    }
-
-    //Cancel Donation if user close checkout popup
-    function handleCheckoutCancelled() {
-        try {
-            ds.checkoutDonationCancel(data, onSuccess, onFail);
-        }
-        catch (e) {
-            //do not store this error. Already stored from server side
-        }
-        UnBindPaymentCheckoutEvents();
-    }
-
+		
+	
 	//this function call when we click on donate button
 	function sendData() {
         if (EditorContent && EditorContent.MACheckoutSupported && GetPaymentType() == 0) {
@@ -324,6 +261,7 @@
         data = donation;
 
             onValidationSuccess = function (result) {
+			
             makePayment();
             return false;
         };
@@ -335,10 +273,6 @@
 
     }
 	
-	//Call some functions       
-        GetEditorInformation($('.BBDonationApiContainer').data('partid'));
-        GetPublicKey();
-		
 		
 	// Attach our event listener to the donate button
     $('.btn-donate').click(function(e) {
