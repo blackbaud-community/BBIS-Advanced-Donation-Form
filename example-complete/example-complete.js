@@ -229,8 +229,6 @@
                             return error.Field + " is not valid.";
                         case 106:
                             return "Record for " + error.Field + " was not found.";
-                        case 203:
-                            return "Donation not completed on BBSP.";
                         case 107:
                             return "Max length for " + error.Field + " exceeded.";
                         default:
@@ -403,7 +401,6 @@
                     PartId: partInstanceId,
                     ClientSitesID: ClientSitesID
                 };
-                result.BBSPTemplateSitePageId = BLACKBAUD.api.pageInformation.pageId;
                 if (paymentMethod == 0) {
                     result.BBSPReturnUri = window.location.href;
                 }
@@ -436,18 +433,6 @@
 				data.ResponseToken = responseCaptcha;
                 donationService.createDonation(data, onSuccess, onFail);
 
-            }
-
-            // Success Callback from Secure Payment Page
-            function completeBBSPPayment(id) {
-                onSuccess = function (d) {
-                    '<%Session["' + d.Id + '"] = "' + true + '"; %>';
-                    getConfirmationHtml(d.Id);
-                };
-                onFail = function (d) {
-                    setValidationMessage(convertErrorsToHtml(d));
-                };
-                donationService.completeBBSPDonation(id, onSuccess, onFail);
             }
 
             // Display the Final Confirmation screen after Successful Doantion
@@ -1407,7 +1392,6 @@
                 if (t) {
                     part.find(".form").hide();
                     part.find(".confirmation").show();
-                    completeBBSPPayment(t);
                 } else {
                     part.find(".form").show();
                     part.find(".confirmation").hide();
