@@ -9,7 +9,6 @@ This repo contains simplified examples of using the Advanced Donation Form part 
 0. Direct Debit
 0. Recurrence
 0. Tribute
-0. Blackbaud Secure Payments
 0. Complete Example
 
 ![](https://github.com/blackbaud-community/Blackbaud-CRM/blob/gh-pages/images/BBIS-Advanced-Donation-Form-Complete.png)
