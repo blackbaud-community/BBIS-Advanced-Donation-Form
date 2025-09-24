@@ -19,8 +19,6 @@
   //In order to simplify our examples, some of this information is hard-coded.
   var donation = {
   MerchantAccountId: '00000000-0000-0000-0000-000000000000',
-  BBSPReturnUri: window.location.href,
-  BBSPTemplateSitePageId: 000,
   PartId: $('.BBDonationApiContainer').data('partid'),
   Gift: {
         PaymentMethod: 0,
