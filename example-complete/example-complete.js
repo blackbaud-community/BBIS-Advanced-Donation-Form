@@ -401,9 +401,7 @@
                     PartId: partInstanceId,
                     ClientSitesID: ClientSitesID
                 };
-                if (paymentMethod == 0) {
-                    result.BBSPReturnUri = window.location.href;
-                }
+                
                 result.MerchantAccountId = CheckoutModel.MerchantAccountId;
                 result.PartId = partInstanceId;
                 return result;
