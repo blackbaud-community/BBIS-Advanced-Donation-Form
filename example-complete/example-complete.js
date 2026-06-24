@@ -1256,6 +1256,11 @@
                 bbcheckout.Configuration.WorkflowType = CheckoutModel.WorkFlowType;
                 bbcheckout.Configuration.HandleBrowserClosing = (CheckoutModel.HandleBrowserClosing === true ? "True" : "False");
                 bbcheckout.Configuration.APITokenID = CheckoutModel.TokenId;
+                //PCO Configuration
+                bbcheckout.Configuration.Data.UsePCO = CheckoutModel.UsePCO;
+                bbcheckout.Configuration.Data.Zone = CheckoutModel.Zone;
+                bbcheckout.Configuration.Data.EnvironmentID = CheckoutModel.EnvironmentID;
+                bbcheckout.Configuration.Data.PCOWorkFlowMode = CheckoutModel.PCOWorkFlowMode;
                 // You can add your own message to display on screen, after checkout pop-up close
                 bbcheckout.Configuration.TempConfirmationHtml = "Thank you for your contribution, please wait while we process your transaction.";
                 bbcheckout.intializeCheckout();
